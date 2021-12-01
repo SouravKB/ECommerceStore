@@ -1,0 +1,7 @@
+targets:
+  $default:
+    builders:
+      build_model|modelGeneratorBuilder:
+        enabled: true
+        generate_for:
+          - lib/*
