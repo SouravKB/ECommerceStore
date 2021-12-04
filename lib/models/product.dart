@@ -1,5 +1,5 @@
-import 'package:model_builder/model_builder.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:model_annotations/model_annotations.dart';
 
 part 'product.g.dart';
 

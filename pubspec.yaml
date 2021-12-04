@@ -39,8 +39,8 @@ dev_dependencies:
   build_runner: ^2.1.5
   source_gen: ^1.2.0
 
-  model_builder:
-    path: model_builder
+  model_helper:
+    path: model_helper
 
 
 
