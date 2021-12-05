@@ -8,21 +8,17 @@ class User {
   @DocumentKey()
   final String userId;
   final String name;
-  final String? profilePic;
+  final String? profilePicUrl;
   final List<String> emailIds;
   final List<String> phoneNos;
   final List<String> addresses;
-  final List<String> shopIds;
-  final List<String> orderIds;
 
   User({
     required this.userId,
     required this.name,
-    required this.profilePic,
+    required this.profilePicUrl,
     required this.emailIds,
     required this.phoneNos,
     required this.addresses,
-    required this.shopIds,
-    required this.orderIds,
   });
 }

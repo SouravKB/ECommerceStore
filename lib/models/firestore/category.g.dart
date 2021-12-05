@@ -22,6 +22,6 @@ extension CategoryCfs on Category {
       Category(
         categoryId: snap.id,
         name: snap[keyName] as String,
-        imageUrl: snap[keyImageUrl] as String,
+        imageUrl: snap[keyImageUrl] as String?,
       );
 }

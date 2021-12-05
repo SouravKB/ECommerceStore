@@ -8,7 +8,7 @@ class Category {
   @DocumentKey()
   final String categoryId;
   final String name;
-  final String imageUrl;
+  final String? imageUrl;
 
   Category({
     required this.categoryId,

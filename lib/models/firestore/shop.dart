@@ -7,26 +7,26 @@ part 'shop.g.dart';
 class Shop {
   @DocumentKey()
   final String shopId;
-  final String shopPic;
-  final String category;
+  final List<String> ownerIds;
+  final String? shopPicUrl;
+  final String type;
   final List<String> emailIds;
   final List<String> phoneNos;
   final String address;
   final int openTime;
   final int closeTime;
   final bool isOpen;
-  final List<String> orderIds;
 
   Shop({
     required this.shopId,
-    required this.shopPic,
-    required this.category,
+    required this.ownerIds,
+    required this.shopPicUrl,
+    required this.type,
     required this.emailIds,
     required this.phoneNos,
     required this.address,
     required this.openTime,
     required this.closeTime,
     required this.isOpen,
-    required this.orderIds,
   });
 }

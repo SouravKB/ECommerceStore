@@ -31,8 +31,8 @@ extension ProductCfs on Product {
         productId: snap.id,
         brand: snap[keyBrand] as String,
         imageUrl: snap[keyImageUrl] as String?,
-        count: snap[keyCount] as double,
-        netQty: snap[keyNetQty] as double,
+        count: snap[keyCount] as int,
+        netQty: snap[keyNetQty] as String,
         cost: snap[keyCost] as int,
         desc: snap[keyDesc] as String,
       );
