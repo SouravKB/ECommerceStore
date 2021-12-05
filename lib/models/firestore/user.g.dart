@@ -14,8 +14,6 @@ extension UserCfs on User {
   static const keyEmailIds = "emailIds";
   static const keyPhoneNos = "phoneNos";
   static const keyAddresses = "addresses";
-  static const keyShopIds = "shopIds";
-  static const keyOrderIds = "orderIds";
 
   Map<String, Object?> toMap() => {
         keyUserId: userId,
@@ -24,8 +22,6 @@ extension UserCfs on User {
         keyEmailIds: emailIds,
         keyPhoneNos: phoneNos,
         keyAddresses: addresses,
-        keyShopIds: shopIds,
-        keyOrderIds: orderIds,
       };
 
   static User fromSnapshot(DocumentSnapshot<Map<String, Object?>> snap) => User(
@@ -35,7 +31,5 @@ extension UserCfs on User {
         emailIds: snap[keyEmailIds] as List<String>,
         phoneNos: snap[keyPhoneNos] as List<String>,
         addresses: snap[keyAddresses] as List<String>,
-        shopIds: snap[keyShopIds] as List<String>,
-        orderIds: snap[keyOrderIds] as List<String>,
       );
 }

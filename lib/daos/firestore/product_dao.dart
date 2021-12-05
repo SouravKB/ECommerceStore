@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommercestore/models/product.dart';
+import 'package:ecommercestore/models/firestore/product.dart';
 
 class ProductDao {
   ProductDao._();

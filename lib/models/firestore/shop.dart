@@ -7,6 +7,7 @@ part 'shop.g.dart';
 class Shop {
   @DocumentKey()
   final String shopId;
+  final List<String> ownerIds;
   final String shopPic;
   final String category;
   final List<String> emailIds;
@@ -19,6 +20,7 @@ class Shop {
 
   Shop({
     required this.shopId,
+    required this.ownerIds,
     required this.shopPic,
     required this.category,
     required this.emailIds,

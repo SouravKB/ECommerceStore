@@ -9,6 +9,7 @@ part of 'shop.dart';
 extension ShopCfs on Shop {
   static const docShop = "Shop";
   static const keyShopId = "shopId";
+  static const keyOwnerIds = "ownerIds";
   static const keyShopPic = "shopPic";
   static const keyCategory = "category";
   static const keyEmailIds = "emailIds";
@@ -19,8 +20,10 @@ extension ShopCfs on Shop {
   static const keyIsOpen = "isOpen";
   static const keyOrderIds = "orderIds";
 
-  Map<String, Object?> toMap() => {
+  Map<String, Object?> toMap() =>
+      {
         keyShopId: shopId,
+        keyOwnerIds: ownerIds,
         keyShopPic: shopPic,
         keyCategory: category,
         keyEmailIds: emailIds,
@@ -33,7 +36,8 @@ extension ShopCfs on Shop {
       };
 
   static Shop fromSnapshot(DocumentSnapshot<Map<String, Object?>> snap) => Shop(
-        shopId: snap.id,
+    shopId: snap.id,
+        ownerIds: snap[keyOwnerIds] as List<String>,
         shopPic: snap[keyShopPic] as String,
         category: snap[keyCategory] as String,
         emailIds: snap[keyEmailIds] as List<String>,
