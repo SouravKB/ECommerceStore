@@ -12,8 +12,6 @@ class User {
   final List<String> emailIds;
   final List<String> phoneNos;
   final List<String> addresses;
-  final List<String> shopIds;
-  final List<String> orderIds;
 
   User({
     required this.userId,
@@ -22,7 +20,5 @@ class User {
     required this.emailIds,
     required this.phoneNos,
     required this.addresses,
-    required this.shopIds,
-    required this.orderIds,
   });
 }

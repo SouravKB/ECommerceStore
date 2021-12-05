@@ -7,6 +7,7 @@ part 'order.g.dart';
 class Order {
   @DocumentKey()
   final String orderId;
+  final String shopId;
   final Map<String, int> products;
   final String phoneNo;
   final String address;
@@ -14,6 +15,7 @@ class Order {
 
   Order({
     required this.orderId,
+    required this.shopId,
     required this.products,
     required this.phoneNo,
     required this.address,
