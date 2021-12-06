@@ -37,7 +37,7 @@ extension ProductSqfl on Product {
       };
 
   static Product fromMap(Map<String, Object?> map) => Product(
-    productId: map[colProductId] as String,
+        productId: map[colProductId] as String,
         categoryId: map[colCategoryId] as String,
         brand: map[colBrand] as String,
         imageUrl: map[colImageUrl] as String?,

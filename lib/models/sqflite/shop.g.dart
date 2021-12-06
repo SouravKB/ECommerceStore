@@ -34,7 +34,7 @@ extension ShopSqfl on Shop {
       };
 
   static Shop fromMap(Map<String, Object?> map) => Shop(
-    shopId: map[colShopId] as String,
+        shopId: map[colShopId] as String,
         shopPicUrl: map[colShopPicUrl] as String?,
         type: map[colType] as String,
         address: map[colAddress] as String,
