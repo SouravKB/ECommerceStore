@@ -5,7 +5,7 @@ part 'shop.g.dart';
 @SqflModel()
 class Shop {
   final String shopId;
-  final String shopPicUrl;
+  final String? shopPicUrl;
   final String type;
   final String address;
   final int openTime;

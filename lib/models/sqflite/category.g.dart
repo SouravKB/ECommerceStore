@@ -15,7 +15,7 @@ extension CategorySqfl on Category {
   static const colName = "name";
   static const typeOfName = "TEXT NOT NULL";
   static const colImageUrl = "imageUrl";
-  static const typeOfImageUrl = "TEXT NOT NULL";
+  static const typeOfImageUrl = "TEXT";
 
   Map<String, Object?> toMap() => {
         colCategoryId: categoryId,
@@ -28,6 +28,6 @@ extension CategorySqfl on Category {
         categoryId: map[colCategoryId] as String,
         shopId: map[colShopId] as String,
         name: map[colName] as String,
-        imageUrl: map[colImageUrl] as String,
+        imageUrl: map[colImageUrl] as String?,
       );
 }

@@ -11,7 +11,7 @@ extension ShopSqfl on Shop {
   static const colShopId = "shopId";
   static const typeOfShopId = "TEXT NOT NULL";
   static const colShopPicUrl = "shopPicUrl";
-  static const typeOfShopPicUrl = "TEXT NOT NULL";
+  static const typeOfShopPicUrl = "TEXT";
   static const colType = "type";
   static const typeOfType = "TEXT NOT NULL";
   static const colAddress = "address";
@@ -34,8 +34,8 @@ extension ShopSqfl on Shop {
       };
 
   static Shop fromMap(Map<String, Object?> map) => Shop(
-        shopId: map[colShopId] as String,
-        shopPicUrl: map[colShopPicUrl] as String,
+    shopId: map[colShopId] as String,
+        shopPicUrl: map[colShopPicUrl] as String?,
         type: map[colType] as String,
         address: map[colAddress] as String,
         openTime: map[colOpenTime] as int,

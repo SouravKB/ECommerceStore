@@ -6,11 +6,11 @@ part 'user.g.dart';
 class User {
   final String userId;
   final String name;
-  final String? profilePic;
+  final String? profilePicUrl;
 
   User({
     required this.userId,
     required this.name,
-    required this.profilePic,
+    required this.profilePicUrl,
   });
 }
