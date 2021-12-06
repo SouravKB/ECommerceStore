@@ -1,15 +1,15 @@
 import 'package:model_annotations/model_annotations.dart';
 
-part 'owner_data.g.dart';
+part 'shop_data.g.dart';
 
 @SqflModel()
-class OwnerData {
-  final String ownerId;
+class ShopData {
+  final String shopId;
   final String data;
   final String type;
 
-  OwnerData({
-    required this.ownerId,
+  ShopData({
+    required this.shopId,
     required this.data,
     required this.type,
   });

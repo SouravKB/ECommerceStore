@@ -17,9 +17,9 @@ extension ProductSqfl on Product {
   static const colImageUrl = "imageUrl";
   static const typeOfImageUrl = "TEXT";
   static const colCount = "count";
-  static const typeOfCount = "REAL NOT NULL";
+  static const typeOfCount = "INTEGER NOT NULL";
   static const colNetQty = "netQty";
-  static const typeOfNetQty = "REAL NOT NULL";
+  static const typeOfNetQty = "TEXT NOT NULL";
   static const colCost = "cost";
   static const typeOfCost = "INTEGER NOT NULL";
   static const colDesc = "desc";
@@ -37,12 +37,12 @@ extension ProductSqfl on Product {
       };
 
   static Product fromMap(Map<String, Object?> map) => Product(
-        productId: map[colProductId] as String,
+    productId: map[colProductId] as String,
         categoryId: map[colCategoryId] as String,
         brand: map[colBrand] as String,
         imageUrl: map[colImageUrl] as String?,
-        count: map[colCount] as double,
-        netQty: map[colNetQty] as double,
+        count: map[colCount] as int,
+        netQty: map[colNetQty] as String,
         cost: map[colCost] as int,
         desc: map[colDesc] as String,
       );

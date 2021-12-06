@@ -29,7 +29,7 @@ class OrderedItemDao {
     return OrderedItemSqfl.fromMap(result[0]);
   }
 
-  Future<List<OrderedItem>> getCategoryList(String orderId) async {
+  Future<List<OrderedItem>> getOrderedItemList(String orderId) async {
     final result = await (await SqfliteDatabase.instance)
         .query(_tableOrderedItem, where: 'orderId = ?', whereArgs: [orderId]);
     return result

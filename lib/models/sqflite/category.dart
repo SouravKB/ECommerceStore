@@ -7,7 +7,7 @@ class Category {
   final String categoryId;
   final String shopId;
   final String name;
-  final String imageUrl;
+  final String? imageUrl;
 
   Category({
     required this.categoryId,

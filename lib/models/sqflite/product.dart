@@ -8,8 +8,8 @@ class Product {
   final String categoryId;
   final String brand;
   final String? imageUrl;
-  final double count;
-  final double netQty;
+  final int count;
+  final String netQty;
   final int cost;
   final String desc;
 
