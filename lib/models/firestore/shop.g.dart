@@ -40,8 +40,8 @@ extension ShopCfs on Shop {
         emailIds: snap[keyEmailIds] as List<String>,
         phoneNos: snap[keyPhoneNos] as List<String>,
         address: snap[keyAddress] as String,
-        openTime: snap[keyOpenTime] as int,
-        closeTime: snap[keyCloseTime] as int,
+        openTime: (snap[keyOpenTime] as num).toInt(),
+        closeTime: (snap[keyCloseTime] as num).toInt(),
         isOpen: snap[keyIsOpen] as bool,
       );
 }
