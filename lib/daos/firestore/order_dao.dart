@@ -6,13 +6,10 @@ class OrderDao {
 
   static final instance = OrderDao._();
 
-  static const _keyUsers = 'users';
   static const _keyOrders = 'orders';
 
-  CollectionReference<Order> _getOrderColReference(String userId) {
+  CollectionReference<Order> _getOrderColReference() {
     return FirebaseFirestore.instance
-        .collection(_keyUsers)
-        .doc(userId)
         .collection(_keyOrders)
         .withConverter<Order>(
           fromFirestore: (snap, _) => OrderCfs.fromSnapshot(snap),
@@ -20,30 +17,59 @@ class OrderDao {
         );
   }
 
-  DocumentReference<Order> getOrderReference(String userId, String orderId) {
-    return _getOrderColReference(userId).doc(orderId);
+  DocumentReference<Order> getOrderReference(String orderId) {
+    return _getOrderColReference().doc(orderId);
   }
 
-  Future<String> addOrder(String userId, Order order) async {
-    final doc = await _getOrderColReference(userId).add(order);
+  Query<Order> _getUserOrdersQuery(String userId) {
+    return FirebaseFirestore.instance
+        .collection(_keyOrders)
+        .where('userId', isEqualTo: userId)
+        .withConverter<Order>(
+          fromFirestore: (snap, _) => OrderCfs.fromSnapshot(snap),
+          toFirestore: (order, _) => order.toMap(),
+        );
+  }
+
+  Query<Order> _getShopOrdersQuery(String shopId) {
+    return FirebaseFirestore.instance
+        .collection(_keyOrders)
+        .where('shopId', isEqualTo: shopId)
+        .withConverter<Order>(
+          fromFirestore: (snap, _) => OrderCfs.fromSnapshot(snap),
+          toFirestore: (order, _) => order.toMap(),
+        );
+  }
+
+  Future<String> addOrder(Order order) async {
+    final doc = await _getOrderColReference().add(order);
     return doc.id;
   }
 
-  Future<void> setOrder(String userId, Order order) async {
-    await getOrderReference(userId, order.orderId).set(order);
+  Future<void> setOrder(Order order) async {
+    await getOrderReference(order.orderId).set(order);
   }
 
-  Future<void> deleteOrder(String userId, String orderId) async {
-    await getOrderReference(userId, orderId).delete();
+  Future<void> deleteOrder(String orderId) async {
+    await getOrderReference(orderId).delete();
   }
 
-  Future<Order> getOrder(String userId, String orderId) async {
-    final doc = await getOrderReference(userId, orderId).get();
+  Future<Order> getOrder(String orderId) async {
+    final doc = await getOrderReference(orderId).get();
     return doc.data()!;
   }
 
-  Future<List<Order>> getOrderList(String userId) async {
-    final querySnap = await _getOrderColReference(userId).get();
+  Future<List<Order>> getOrderListForUser(String userId) async {
+    final querySnap = await _getUserOrdersQuery(userId).get();
+    final orderList = <Order>[];
+    for (final doc in querySnap.docs) {
+      orderList.add(doc.data());
+    }
+    return orderList;
+  }
+
+  Future<List<Order>> getOrderListForShop(String shopId) async {
+    final querySnap = await _getShopOrdersQuery(shopId).get();
     final orderList = <Order>[];
     for (final doc in querySnap.docs) {
       orderList.add(doc.data());
