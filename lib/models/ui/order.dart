@@ -1,5 +1,7 @@
 class Order {
   final String orderId;
+  final String userId;
+  final String shopId;
   final Map<String, int> products;
   final String phoneNo;
   final String address;
@@ -7,6 +9,8 @@ class Order {
 
   Order({
     required this.orderId,
+    required this.userId,
+    required this.shopId,
     required this.products,
     required this.phoneNo,
     required this.address,
