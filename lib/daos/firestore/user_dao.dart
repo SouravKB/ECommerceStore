@@ -30,9 +30,4 @@ class UserDao {
   Stream<User> getUserStream(String userId) {
     return _getUserReference(userId).snapshots().map((snap) => snap.data()!);
   }
-
-  Future<User> getUser(String userId) async {
-    final doc = await _getUserReference(userId).get();
-    return doc.data()!;
-  }
 }

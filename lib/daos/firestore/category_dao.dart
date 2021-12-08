@@ -38,17 +38,14 @@ class CategoryDao {
     await _getCategoryReference(shopId, categoryId).delete();
   }
 
-  Future<Category> getCategory(String shopId, String categoryId) async {
-    final doc = await _getCategoryReference(shopId, categoryId).get();
-    return doc.data()!;
+  Stream<Category> getCategoryStream(String shopId, String categoryId) {
+    return _getCategoryReference(shopId, categoryId)
+        .snapshots()
+        .map((snap) => snap.data()!);
   }
 
-  Future<List<Category>> getCategoryList(String shopId) async {
-    final querySnap = await _getCategoryColReference(shopId).get();
-    final categoryList = <Category>[];
-    for (final doc in querySnap.docs) {
-      categoryList.add(doc.data());
-    }
-    return categoryList;
+  Stream<List<Category>> getCategoryListStream(String shopId) {
+    return _getCategoryColReference(shopId).snapshots().map(
+        (snap) => snap.docs.map((doc) => doc.data()).toList(growable: false));
   }
 }

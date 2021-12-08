@@ -46,34 +46,17 @@ class OrderDao {
     return doc.id;
   }
 
-  Future<void> setOrder(Order order) async {
-    await getOrderReference(order.orderId).set(order);
-  }
-
   Future<void> deleteOrder(String orderId) async {
     await getOrderReference(orderId).delete();
   }
 
-  Future<Order> getOrder(String orderId) async {
-    final doc = await getOrderReference(orderId).get();
-    return doc.data()!;
+  Stream<List<Order>> getOrderListStreamForUser(String userId) {
+    return _getUserOrdersQuery(userId).snapshots().map(
+        (snap) => snap.docs.map((doc) => doc.data()).toList(growable: false));
   }
 
-  Future<List<Order>> getOrderListForUser(String userId) async {
-    final querySnap = await _getUserOrdersQuery(userId).get();
-    final orderList = <Order>[];
-    for (final doc in querySnap.docs) {
-      orderList.add(doc.data());
-    }
-    return orderList;
-  }
-
-  Future<List<Order>> getOrderListForShop(String shopId) async {
-    final querySnap = await _getShopOrdersQuery(shopId).get();
-    final orderList = <Order>[];
-    for (final doc in querySnap.docs) {
-      orderList.add(doc.data());
-    }
-    return orderList;
+  Stream<List<Order>> getOrderListStreamForShop(String shopId) {
+    return _getShopOrdersQuery(shopId).snapshots().map(
+        (snap) => snap.docs.map((doc) => doc.data()).toList(growable: false));
   }
 }
