@@ -9,13 +9,13 @@ class ProductDao {
 
   static const _tableProduct = 'Product';
 
-  void insertProduct(Product product) async {
+  Future<void> insertProduct(Product product) async {
     await (await SqfliteDatabase.instance).insert(
         _tableProduct, product.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  void deleteProduct(String productId) async {
+  Future<void> deleteProduct(String productId) async {
     await (await SqfliteDatabase.instance)
         .delete(_tableProduct, where: 'productId = ?', whereArgs: [productId]);
   }

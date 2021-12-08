@@ -29,11 +29,11 @@ class OrderDao {
     return doc.id;
   }
 
-  void setOrder(String userId, Order order) async {
+  Future<void> setOrder(String userId, Order order) async {
     await getOrderReference(userId, order.orderId).set(order);
   }
 
-  void deleteOrder(String userId, String orderId) async {
+  Future<void> deleteOrder(String userId, String orderId) async {
     await getOrderReference(userId, orderId).delete();
   }
 

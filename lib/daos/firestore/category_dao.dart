@@ -30,11 +30,11 @@ class CategoryDao {
     return doc.id;
   }
 
-  void setCategory(String shopId, Category category) async {
+  Future<void> setCategory(String shopId, Category category) async {
     await _getCategoryReference(shopId, category.categoryId).set(category);
   }
 
-  void deleteCategory(String shopId, String categoryId) async {
+  Future<void> deleteCategory(String shopId, String categoryId) async {
     await _getCategoryReference(shopId, categoryId).delete();
   }
 

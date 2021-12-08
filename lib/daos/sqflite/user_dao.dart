@@ -9,12 +9,12 @@ class UserDao {
 
   static const _tableUser = 'User';
 
-  void insertUser(User user) async {
+  Future<void> insertUser(User user) async {
     await (await SqfliteDatabase.instance).insert(_tableUser, user.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  void deleteUser(String userId) async {
+  Future<void> deleteUser(String userId) async {
     await (await SqfliteDatabase.instance)
         .delete(_tableUser, where: 'userId = ?', whereArgs: [userId]);
   }

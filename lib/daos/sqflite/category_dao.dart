@@ -9,13 +9,13 @@ class CategoryDao {
 
   static const _tableCategory = 'Category';
 
-  void insertCategory(Category category) async {
+  Future<void> insertCategory(Category category) async {
     await (await SqfliteDatabase.instance).insert(
         _tableCategory, category.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  void deleteCategory(String categoryId) async {
+  Future<void> deleteCategory(String categoryId) async {
     await (await SqfliteDatabase.instance).delete(_tableCategory,
         where: 'categoryId = ?', whereArgs: [categoryId]);
   }

@@ -9,13 +9,13 @@ class ShopOwnerDao {
 
   static const _tableShopOwner = 'ShopOwner';
 
-  void insertShopOwner(ShopOwner shopOwner) async {
+  Future<void> insertShopOwner(ShopOwner shopOwner) async {
     await (await SqfliteDatabase.instance).insert(
         _tableShopOwner, shopOwner.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  void deleteShopOwner(String ownerId, String shopId) async {
+  Future<void> deleteShopOwner(String ownerId, String shopId) async {
     await (await SqfliteDatabase.instance).delete(_tableShopOwner,
         where: 'ownerId = ? AND shopId = ?', whereArgs: [ownerId, shopId]);
   }

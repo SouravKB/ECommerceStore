@@ -24,28 +24,30 @@ class ProductDao {
         );
   }
 
-  DocumentReference<Product> _getProductReference(
-      String shopId, String categoryId, String productId) {
+  DocumentReference<Product> _getProductReference(String shopId,
+      String categoryId, String productId) {
     return _getProductColReference(shopId, categoryId).doc(productId);
   }
 
-  Future<String> addProduct(
-      String shopId, String categoryId, Product product) async {
+  Future<String> addProduct(String shopId, String categoryId,
+      Product product) async {
     final doc = await _getProductColReference(shopId, categoryId).add(product);
     return doc.id;
   }
 
-  void setProduct(String shopId, String categoryId, Product product) async {
+  Future<void> setProduct(String shopId, String categoryId,
+      Product product) async {
     await _getProductReference(shopId, categoryId, product.productId)
         .set(product);
   }
 
-  void deleteProduct(String shopId, String categoryId, String productId) async {
+  Future<void> deleteProduct(String shopId, String categoryId,
+      String productId) async {
     await _getProductReference(shopId, categoryId, productId).delete();
   }
 
-  Future<Product> getProduct(
-      String shopId, String categoryId, String productId) async {
+  Future<Product> getProduct(String shopId, String categoryId,
+      String productId) async {
     final doc = await _getProductReference(shopId, categoryId, productId).get();
     return doc.data()!;
   }

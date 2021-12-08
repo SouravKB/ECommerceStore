@@ -9,12 +9,12 @@ class ShopDao {
 
   static const _tableShop = 'Shop';
 
-  void insertShop(Shop shop) async {
+  Future<void> insertShop(Shop shop) async {
     await (await SqfliteDatabase.instance).insert(_tableShop, shop.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  void deleteShop(String shopId) async {
+  Future<void> deleteShop(String shopId) async {
     await (await SqfliteDatabase.instance)
         .delete(_tableShop, where: 'shopId = ?', whereArgs: [shopId]);
   }

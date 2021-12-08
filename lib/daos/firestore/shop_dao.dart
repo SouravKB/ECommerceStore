@@ -19,11 +19,11 @@ class ShopDao {
     return _getShopColReference().doc(shopId);
   }
 
-  void setShop(Shop shop) async {
+  Future<void> setShop(Shop shop) async {
     await _getShopReference(shop.shopId).set(shop);
   }
 
-  void deleteShop(String shopId) async {
+  Future<void> deleteShop(String shopId) async {
     await _getShopReference(shopId).delete();
   }
 

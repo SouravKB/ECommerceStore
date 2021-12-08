@@ -20,7 +20,7 @@ class SqfliteDatabase {
     );
   }
 
-  static void _createDatabase(Database db, int version) async {
+  static Future<void> _createDatabase(Database db, int version) async {
     switch (version) {
       case 1:
         await UserDao.createTable(db);

@@ -9,13 +9,13 @@ class UserDataDao {
 
   static const _tableUserData = 'UserData';
 
-  void insertUserData(UserData userData) async {
+  Future<void> insertUserData(UserData userData) async {
     await (await SqfliteDatabase.instance).insert(
         _tableUserData, userData.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  void deleteUserData(UserData userData) async {
+  Future<void> deleteUserData(UserData userData) async {
     await (await SqfliteDatabase.instance).delete(_tableUserData,
         where: 'userId = ? AND data = ? AND type = ?',
         whereArgs: [userData.userId, userData.data, userData.type]);

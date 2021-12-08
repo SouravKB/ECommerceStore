@@ -9,12 +9,12 @@ class OrderDao {
 
   static const _tableOrder = 'Order';
 
-  void insertOrder(Order order) async {
+  Future<void> insertOrder(Order order) async {
     await (await SqfliteDatabase.instance).insert(_tableOrder, order.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  void deleteOrder(String orderId) async {
+  Future<void> deleteOrder(String orderId) async {
     await (await SqfliteDatabase.instance)
         .delete(_tableOrder, where: 'orderId = ?', whereArgs: [orderId]);
   }

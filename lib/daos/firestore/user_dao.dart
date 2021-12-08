@@ -19,11 +19,11 @@ class UserDao {
     return _getUserColReference().doc(userId);
   }
 
-  void setUser(User user) async {
+  Future<void> setUser(User user) async {
     await _getUserReference(user.userId).set(user);
   }
 
-  void deleteUser(String userId) async {
+  Future<void> deleteUser(String userId) async {
     await _getUserReference(userId).delete();
   }
 
