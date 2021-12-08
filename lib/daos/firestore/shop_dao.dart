@@ -30,9 +30,4 @@ class ShopDao {
   Stream<Shop> getShopStream(String shopId) {
     return _getShopReference(shopId).snapshots().map((snap) => snap.data()!);
   }
-
-  Future<Shop> getShop(String shopId) async {
-    final doc = await _getShopReference(shopId).get();
-    return doc.data()!;
-  }
 }
