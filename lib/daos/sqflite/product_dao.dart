@@ -39,11 +39,10 @@ class ProductDao {
     CREATE TABLE Product (
     productId ${ProductSqfl.typeOfProductId} PRIMARY KEY,
     categoryId ${ProductSqfl.typeOfCategoryId},
-    brand ${ProductSqfl.typeOfBrand},
+    name ${ProductSqfl.typeOfName},
     imageUrl ${ProductSqfl.typeOfImageUrl},
-    count ${ProductSqfl.typeOfCount},
-    netQty ${ProductSqfl.typeOfNetQty},
-    cost ${ProductSqfl.typeOfCost},
+    shortDesc ${ProductSqfl.typeOfShortDesc},
+    price ${ProductSqfl.typeOfPrice},
     desc ${ProductSqfl.typeOfDesc},
     FOREIGN KEY(categoryId) REFERENCES Category(categoryId)
     )

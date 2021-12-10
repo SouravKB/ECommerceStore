@@ -6,21 +6,19 @@ part 'product.g.dart';
 class Product {
   final String productId;
   final String categoryId;
-  final String brand;
+  final String name;
   final String? imageUrl;
-  final int count;
-  final String netQty;
-  final int cost;
+  final String shortDesc;
+  final int price;
   final String desc;
 
   Product({
     required this.productId,
     required this.categoryId,
-    required this.brand,
+    required this.name,
     required this.imageUrl,
-    required this.count,
-    required this.netQty,
-    required this.cost,
+    required this.shortDesc,
+    required this.price,
     required this.desc,
   });
 }

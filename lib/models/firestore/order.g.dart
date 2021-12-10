@@ -11,7 +11,8 @@ extension OrderCfs on Order {
   static const keyOrderId = "orderId";
   static const keyUserId = "userId";
   static const keyShopId = "shopId";
-  static const keyProducts = "products";
+  static const keyProductIdsWithCount = "productIdsWithCount";
+  static const keyOrderDateTime = "orderDateTime";
   static const keyPhoneNo = "phoneNo";
   static const keyAddress = "address";
   static const keyPayMethod = "payMethod";
@@ -20,7 +21,8 @@ extension OrderCfs on Order {
         keyOrderId: orderId,
         keyUserId: userId,
         keyShopId: shopId,
-        keyProducts: products,
+        keyProductIdsWithCount: productIdsWithCount,
+        keyOrderDateTime: orderDateTime,
         keyPhoneNo: phoneNo,
         keyAddress: address,
         keyPayMethod: payMethod,
@@ -31,7 +33,8 @@ extension OrderCfs on Order {
         orderId: snap.id,
         userId: snap[keyUserId] as String,
         shopId: snap[keyShopId] as String,
-        products: snap[keyProducts] as Map<String, int>,
+        productIdsWithCount: snap[keyProductIdsWithCount] as Map<String, int>,
+        orderDateTime: snap[keyOrderDateTime] as DateTime,
         phoneNo: snap[keyPhoneNo] as String,
         address: snap[keyAddress] as String,
         payMethod: snap[keyPayMethod] as String,

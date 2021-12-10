@@ -25,12 +25,13 @@ class OrderRepo {
             orderId: cfsOrder.orderId,
             userId: cfsOrder.userId,
             shopId: cfsOrder.shopId,
+            orderDateTime: cfsOrder.orderDateTime,
             phoneNo: cfsOrder.phoneNo,
             address: cfsOrder.address,
             payMethod: cfsOrder.payMethod);
         _sqfliteOrderDao.insertOrder(sqflOrder);
 
-        for (final item in cfsOrder.products.entries) {
+        for (final item in cfsOrder.productIdsWithCount.entries) {
           final orderedItem = sqflite_models.OrderedItem(
               orderId: cfsOrder.orderId,
               productId: item.key,
@@ -41,10 +42,11 @@ class OrderRepo {
 
       yield orders
           .map((order) => Order(
-              orderId: order.orderId,
+          orderId: order.orderId,
               userId: order.userId,
               shopId: order.shopId,
-              products: order.products,
+              productIdsWithCount: order.productIdsWithCount,
+              orderDateTime: order.orderDateTime,
               phoneNo: order.phoneNo,
               address: order.address,
               payMethod: PaymentMethod.values.firstWhere(
@@ -61,12 +63,13 @@ class OrderRepo {
             orderId: cfsOrder.orderId,
             userId: cfsOrder.userId,
             shopId: cfsOrder.shopId,
+            orderDateTime: cfsOrder.orderDateTime,
             phoneNo: cfsOrder.phoneNo,
             address: cfsOrder.address,
             payMethod: cfsOrder.payMethod);
         _sqfliteOrderDao.insertOrder(sqflOrder);
 
-        for (final item in cfsOrder.products.entries) {
+        for (final item in cfsOrder.productIdsWithCount.entries) {
           final orderedItem = sqflite_models.OrderedItem(
               orderId: cfsOrder.orderId,
               productId: item.key,
@@ -77,10 +80,11 @@ class OrderRepo {
 
       yield orders
           .map((order) => Order(
-              orderId: order.orderId,
+          orderId: order.orderId,
               userId: order.userId,
               shopId: order.shopId,
-              products: order.products,
+              productIdsWithCount: order.productIdsWithCount,
+              orderDateTime: order.orderDateTime,
               phoneNo: order.phoneNo,
               address: order.address,
               payMethod: PaymentMethod.values.firstWhere(
@@ -94,7 +98,8 @@ class OrderRepo {
         orderId: order.orderId,
         userId: order.userId,
         shopId: order.shopId,
-        products: order.products,
+        productIdsWithCount: order.productIdsWithCount,
+        orderDateTime: order.orderDateTime,
         phoneNo: order.phoneNo,
         address: order.address,
         payMethod: order.payMethod.toString());

@@ -23,15 +23,15 @@ class UserRepo {
           profilePicUrl: cfsUser.profilePicUrl);
       _sqfliteUserDao.insertUser(sqflUser);
 
-      for (final data in cfsUser.emailIds) {
-        final userData = sqflite_models.UserData(
-            userId: cfsUser.userId, data: data, type: 'emailId');
-        _sqfliteUserDataDao.insertUserData(userData);
-      }
-
       for (final data in cfsUser.phoneNos) {
         final userData = sqflite_models.UserData(
             userId: cfsUser.userId, data: data, type: 'phoneNo');
+        _sqfliteUserDataDao.insertUserData(userData);
+      }
+
+      for (final data in cfsUser.emailIds) {
+        final userData = sqflite_models.UserData(
+            userId: cfsUser.userId, data: data, type: 'emailId');
         _sqfliteUserDataDao.insertUserData(userData);
       }
 

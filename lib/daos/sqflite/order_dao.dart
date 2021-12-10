@@ -43,6 +43,7 @@ class OrderDao {
     orderId ${OrderSqfl.typeOfOrderId} PRIMARY KEY,
     userId ${OrderSqfl.typeOfUserId},
     shopId ${OrderSqfl.typeOfShopId},
+    orderDateTime ${OrderSqfl.typeOfOrderDateTime},
     phoneNo ${OrderSqfl.typeOfPhoneNo},
     address ${OrderSqfl.typeOfAddress},
     payMethod ${OrderSqfl.typeOfPayMethod},

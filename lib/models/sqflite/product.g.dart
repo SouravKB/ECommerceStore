@@ -12,38 +12,34 @@ extension ProductSqfl on Product {
   static const typeOfProductId = "TEXT NOT NULL";
   static const colCategoryId = "categoryId";
   static const typeOfCategoryId = "TEXT NOT NULL";
-  static const colBrand = "brand";
-  static const typeOfBrand = "TEXT NOT NULL";
+  static const colName = "name";
+  static const typeOfName = "TEXT NOT NULL";
   static const colImageUrl = "imageUrl";
   static const typeOfImageUrl = "TEXT";
-  static const colCount = "count";
-  static const typeOfCount = "INTEGER NOT NULL";
-  static const colNetQty = "netQty";
-  static const typeOfNetQty = "TEXT NOT NULL";
-  static const colCost = "cost";
-  static const typeOfCost = "INTEGER NOT NULL";
+  static const colShortDesc = "shortDesc";
+  static const typeOfShortDesc = "TEXT NOT NULL";
+  static const colPrice = "price";
+  static const typeOfPrice = "INTEGER NOT NULL";
   static const colDesc = "desc";
   static const typeOfDesc = "TEXT NOT NULL";
 
   Map<String, Object?> toMap() => {
         colProductId: productId,
         colCategoryId: categoryId,
-        colBrand: brand,
+        colName: name,
         colImageUrl: imageUrl,
-        colCount: count,
-        colNetQty: netQty,
-        colCost: cost,
+        colShortDesc: shortDesc,
+        colPrice: price,
         colDesc: desc,
       };
 
   static Product fromMap(Map<String, Object?> map) => Product(
-        productId: map[colProductId] as String,
+    productId: map[colProductId] as String,
         categoryId: map[colCategoryId] as String,
-        brand: map[colBrand] as String,
+        name: map[colName] as String,
         imageUrl: map[colImageUrl] as String?,
-        count: map[colCount] as int,
-        netQty: map[colNetQty] as String,
-        cost: map[colCost] as int,
+        shortDesc: map[colShortDesc] as String,
+        price: map[colPrice] as int,
         desc: map[colDesc] as String,
       );
 }

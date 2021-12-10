@@ -29,12 +29,13 @@ class ShopDao {
     await db.execute('''
     CREATE TABLE Shop (
     shopId ${ShopSqfl.typeOfShopId} PRIMARY KEY,
+    name ${ShopSqfl.typeOfName},
     shopPicUrl ${ShopSqfl.typeOfShopPicUrl},
     type ${ShopSqfl.typeOfType},
     address ${ShopSqfl.typeOfAddress},
     openTime ${ShopSqfl.typeOfOpenTime},
     closeTime ${ShopSqfl.typeOfCloseTime},
-    isOpen ${ShopSqfl.typeOfIsOpen}
+    isCurrentlyOpen ${ShopSqfl.typeOfIsCurrentlyOpen}
     )
     ''');
   }
