@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:ecommercestore/daos/sqflite/category_dao.dart';
 import 'package:ecommercestore/daos/sqflite/order_dao.dart';
 import 'package:ecommercestore/daos/sqflite/ordered_item_dao.dart';
 import 'package:ecommercestore/daos/sqflite/product_dao.dart';
 import 'package:ecommercestore/daos/sqflite/shop_dao.dart';
 import 'package:ecommercestore/daos/sqflite/shop_data_dao.dart';
+import 'package:ecommercestore/daos/sqflite/shop_owner_dao.dart';
 import 'package:ecommercestore/daos/sqflite/user_dao.dart';
 import 'package:ecommercestore/daos/sqflite/user_data_dao.dart';
 import 'package:path/path.dart';
@@ -27,7 +27,7 @@ class SqfliteDatabase {
         await UserDataDao.createTable(db);
         await ShopDao.createTable(db);
         await ShopDataDao.createTable(db);
-        await CategoryDao.createTable(db);
+        await ShopOwnerDao.createTable(db);
         await ProductDao.createTable(db);
         await OrderDao.createTable(db);
         await OrderedItemDao.createTable(db);

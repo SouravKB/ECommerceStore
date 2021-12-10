@@ -12,6 +12,7 @@ extension ProductCfs on Product {
   static const keyName = "name";
   static const keyImageUrl = "imageUrl";
   static const keyShortDesc = "shortDesc";
+  static const keyCategory = "category";
   static const keyPrice = "price";
   static const keyDesc = "desc";
 
@@ -20,6 +21,7 @@ extension ProductCfs on Product {
         keyName: name,
         keyImageUrl: imageUrl,
         keyShortDesc: shortDesc,
+        keyCategory: category,
         keyPrice: price,
         keyDesc: desc,
       };
@@ -30,6 +32,7 @@ extension ProductCfs on Product {
         name: snap[keyName] as String,
         imageUrl: snap[keyImageUrl] as String?,
         shortDesc: snap[keyShortDesc] as String,
+        category: snap[keyCategory] as String,
         price: (snap[keyPrice] as num).toInt(),
         desc: snap[keyDesc] as String,
       );
