@@ -14,17 +14,17 @@ class ProductRepo {
   final _firestoreProductDao = firestore_daos.ProductDao.instance;
   final _sqfliteProductDao = sqflite_daos.ProductDao.instance;
 
-  Stream<List<Product>> getProductListStream(
-      String shopId, String categoryId) async* {
+  Stream<List<Product>> getProductListStream(String shopId) async* {
     await for (final products
-        in _firestoreProductDao.getProductListStream(shopId, categoryId)) {
+        in _firestoreProductDao.getProductListStream(shopId)) {
       for (final cfsProduct in products) {
         final sqflProduct = sqflite_models.Product(
             productId: cfsProduct.productId,
-            categoryId: categoryId,
+            shopId: shopId,
             name: cfsProduct.name,
             imageUrl: cfsProduct.imageUrl,
             shortDesc: cfsProduct.shortDesc,
+            category: cfsProduct.category,
             price: cfsProduct.price,
             desc: cfsProduct.desc);
         _sqfliteProductDao.insertProduct(sqflProduct);
@@ -32,26 +32,27 @@ class ProductRepo {
 
       yield products
           .map((product) => Product(
-          productId: product.productId,
+              productId: product.productId,
               name: product.name,
               imageUrl: product.imageUrl,
               shortDesc: product.shortDesc,
+              category: product.category,
               price: product.price,
               desc: product.desc))
           .toList(growable: false);
     }
   }
 
-  Stream<Product> getProductStream(
-      String shopId, String categoryId, String productId) async* {
-    await for (final cfsProduct in _firestoreProductDao.getProductStream(
-        shopId, categoryId, productId)) {
+  Stream<Product> getProductStream(String shopId, String productId) async* {
+    await for (final cfsProduct
+        in _firestoreProductDao.getProductStream(shopId, productId)) {
       final sqflProduct = sqflite_models.Product(
           productId: cfsProduct.productId,
-          categoryId: categoryId,
+          shopId: shopId,
           name: cfsProduct.name,
           imageUrl: cfsProduct.imageUrl,
           shortDesc: cfsProduct.shortDesc,
+          category: cfsProduct.category,
           price: cfsProduct.price,
           desc: cfsProduct.desc);
       _sqfliteProductDao.insertProduct(sqflProduct);
@@ -61,37 +62,43 @@ class ProductRepo {
           name: cfsProduct.name,
           imageUrl: cfsProduct.imageUrl,
           shortDesc: cfsProduct.shortDesc,
+          category: cfsProduct.category,
           price: cfsProduct.price,
           desc: cfsProduct.desc);
     }
   }
 
-  Future<void> addProduct(
-      String shopId, String categoryId, Product product) async {
+  Stream<List<String>> getCategoriesStream(String shopId) async* {
+    await for (final _ in getProductListStream(shopId)) {
+      yield await _sqfliteProductDao.getCategories(shopId);
+    }
+  }
+
+  Future<void> addProduct(String shopId, Product product) async {
     final cfsProduct = firestore_models.Product(
         productId: product.productId,
         name: product.name,
         imageUrl: product.imageUrl,
         shortDesc: product.shortDesc,
+        category: product.category,
         price: product.price,
         desc: product.desc);
-    await _firestoreProductDao.addProduct(shopId, categoryId, cfsProduct);
+    await _firestoreProductDao.addProduct(shopId, cfsProduct);
   }
 
-  Future<void> updateProduct(
-      String shopId, String categoryId, Product product) async {
+  Future<void> updateProduct(String shopId, Product product) async {
     final cfsProduct = firestore_models.Product(
         productId: product.productId,
         name: product.name,
         imageUrl: product.imageUrl,
         shortDesc: product.shortDesc,
+        category: product.category,
         price: product.price,
         desc: product.desc);
-    await _firestoreProductDao.setProduct(shopId, categoryId, cfsProduct);
+    await _firestoreProductDao.setProduct(shopId, cfsProduct);
   }
 
-  Future<void> deleteProduct(
-      String shopId, String categoryId, String productId) async {
-    await _firestoreProductDao.deleteProduct(shopId, categoryId, productId);
+  Future<void> deleteProduct(String shopId, String productId) async {
+    await _firestoreProductDao.deleteProduct(shopId, productId);
   }
 }

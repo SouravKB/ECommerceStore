@@ -26,11 +26,22 @@ class ProductDao {
     return ProductSqfl.fromMap(result[0]);
   }
 
-  Future<List<Product>> getProductList(String categoryId) async {
+  Future<List<Product>> getProductList(String shopId) async {
     final result = await (await SqfliteDatabase.instance)
-        .query(_tableProduct, where: 'categoryId = ?', whereArgs: [categoryId]);
+        .query(_tableProduct, where: 'shopId = ?', whereArgs: [shopId]);
     return result
         .map((res) => ProductSqfl.fromMap(res))
+        .toList(growable: false);
+  }
+
+  Future<List<String>> getCategories(String shopId) async {
+    final result = await (await SqfliteDatabase.instance).query(_tableProduct,
+        columns: ['category'],
+        where: 'shopId = ?',
+        whereArgs: [shopId],
+        groupBy: 'category');
+    return result
+        .map((res) => res['category'] as String)
         .toList(growable: false);
   }
 
@@ -38,13 +49,14 @@ class ProductDao {
     await db.execute('''
     CREATE TABLE Product (
     productId ${ProductSqfl.typeOfProductId} PRIMARY KEY,
-    categoryId ${ProductSqfl.typeOfCategoryId},
+    shopId ${ProductSqfl.typeOfShopId},
     name ${ProductSqfl.typeOfName},
     imageUrl ${ProductSqfl.typeOfImageUrl},
     shortDesc ${ProductSqfl.typeOfShortDesc},
+    category ${ProductSqfl.typeOfCategory},
     price ${ProductSqfl.typeOfPrice},
     desc ${ProductSqfl.typeOfDesc},
-    FOREIGN KEY(categoryId) REFERENCES Category(categoryId)
+    FOREIGN KEY(shopId) REFERENCES Shop(shopId)
     )
     ''');
   }

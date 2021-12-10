@@ -28,6 +28,14 @@ class ShopOwnerDao {
         .toList(growable: false);
   }
 
+  Future<List<ShopOwner>> getUserShopList(String userId) async {
+    final result = await (await SqfliteDatabase.instance)
+        .query(_tableShopOwner, where: 'userId = ?', whereArgs: [userId]);
+    return result
+        .map((res) => ShopOwnerSqfl.fromMap(res))
+        .toList(growable: false);
+  }
+
   static Future<void> createTable(Database db) async {
     await db.execute('''
     CREATE TABLE ShopOwner (
