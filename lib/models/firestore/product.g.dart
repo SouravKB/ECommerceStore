@@ -9,31 +9,28 @@ part of 'product.dart';
 extension ProductCfs on Product {
   static const docProduct = "Product";
   static const keyProductId = "productId";
-  static const keyBrand = "brand";
+  static const keyName = "name";
   static const keyImageUrl = "imageUrl";
-  static const keyCount = "count";
-  static const keyNetQty = "netQty";
-  static const keyCost = "cost";
+  static const keyShortDesc = "shortDesc";
+  static const keyPrice = "price";
   static const keyDesc = "desc";
 
   Map<String, Object?> toMap() => {
         keyProductId: productId,
-        keyBrand: brand,
+        keyName: name,
         keyImageUrl: imageUrl,
-        keyCount: count,
-        keyNetQty: netQty,
-        keyCost: cost,
+        keyShortDesc: shortDesc,
+        keyPrice: price,
         keyDesc: desc,
       };
 
   static Product fromSnapshot(DocumentSnapshot<Map<String, Object?>> snap) =>
       Product(
         productId: snap.id,
-        brand: snap[keyBrand] as String,
+        name: snap[keyName] as String,
         imageUrl: snap[keyImageUrl] as String?,
-        count: (snap[keyCount] as num).toInt(),
-        netQty: snap[keyNetQty] as String,
-        cost: (snap[keyCost] as num).toInt(),
+        shortDesc: snap[keyShortDesc] as String,
+        price: (snap[keyPrice] as num).toInt(),
         desc: snap[keyDesc] as String,
       );
 }

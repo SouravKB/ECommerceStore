@@ -22,23 +22,21 @@ class ProductRepo {
         final sqflProduct = sqflite_models.Product(
             productId: cfsProduct.productId,
             categoryId: categoryId,
-            brand: cfsProduct.brand,
+            name: cfsProduct.name,
             imageUrl: cfsProduct.imageUrl,
-            count: cfsProduct.count,
-            netQty: cfsProduct.netQty,
-            cost: cfsProduct.cost,
+            shortDesc: cfsProduct.shortDesc,
+            price: cfsProduct.price,
             desc: cfsProduct.desc);
         _sqfliteProductDao.insertProduct(sqflProduct);
       }
 
       yield products
           .map((product) => Product(
-              productId: product.productId,
-              brand: product.brand,
+          productId: product.productId,
+              name: product.name,
               imageUrl: product.imageUrl,
-              count: product.count,
-              netQty: product.netQty,
-              cost: product.cost,
+              shortDesc: product.shortDesc,
+              price: product.price,
               desc: product.desc))
           .toList(growable: false);
     }
@@ -51,21 +49,19 @@ class ProductRepo {
       final sqflProduct = sqflite_models.Product(
           productId: cfsProduct.productId,
           categoryId: categoryId,
-          brand: cfsProduct.brand,
+          name: cfsProduct.name,
           imageUrl: cfsProduct.imageUrl,
-          count: cfsProduct.count,
-          netQty: cfsProduct.netQty,
-          cost: cfsProduct.cost,
+          shortDesc: cfsProduct.shortDesc,
+          price: cfsProduct.price,
           desc: cfsProduct.desc);
       _sqfliteProductDao.insertProduct(sqflProduct);
 
       yield Product(
           productId: cfsProduct.productId,
-          brand: cfsProduct.brand,
+          name: cfsProduct.name,
           imageUrl: cfsProduct.imageUrl,
-          count: cfsProduct.count,
-          netQty: cfsProduct.netQty,
-          cost: cfsProduct.cost,
+          shortDesc: cfsProduct.shortDesc,
+          price: cfsProduct.price,
           desc: cfsProduct.desc);
     }
   }
@@ -74,11 +70,10 @@ class ProductRepo {
       String shopId, String categoryId, Product product) async {
     final cfsProduct = firestore_models.Product(
         productId: product.productId,
-        brand: product.brand,
+        name: product.name,
         imageUrl: product.imageUrl,
-        count: product.count,
-        netQty: product.netQty,
-        cost: product.cost,
+        shortDesc: product.shortDesc,
+        price: product.price,
         desc: product.desc);
     await _firestoreProductDao.addProduct(shopId, categoryId, cfsProduct);
   }
@@ -87,11 +82,10 @@ class ProductRepo {
       String shopId, String categoryId, Product product) async {
     final cfsProduct = firestore_models.Product(
         productId: product.productId,
-        brand: product.brand,
+        name: product.name,
         imageUrl: product.imageUrl,
-        count: product.count,
-        netQty: product.netQty,
-        cost: product.cost,
+        shortDesc: product.shortDesc,
+        price: product.price,
         desc: product.desc);
     await _firestoreProductDao.setProduct(shopId, categoryId, cfsProduct);
   }

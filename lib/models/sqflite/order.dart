@@ -7,6 +7,7 @@ class Order {
   final String orderId;
   final String userId;
   final String shopId;
+  final DateTime orderDateTime;
   final String phoneNo;
   final String address;
   final String payMethod;
@@ -15,6 +16,7 @@ class Order {
     required this.orderId,
     required this.userId,
     required this.shopId,
+    required this.orderDateTime,
     required this.phoneNo,
     required this.address,
     required this.payMethod,
