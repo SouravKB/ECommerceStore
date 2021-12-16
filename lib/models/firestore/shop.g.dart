@@ -35,16 +35,22 @@ extension ShopCfs on Shop {
       };
 
   static Shop fromSnapshot(DocumentSnapshot<Map<String, Object?>> snap) => Shop(
-    shopId: snap.id,
-        ownerIds: snap[keyOwnerIds] as List<String>,
+        shopId: snap.id,
+        ownerIds: (snap[keyOwnerIds] as List)
+            .map((item) => item as String)
+            .toList(growable: false),
         name: snap[keyName] as String,
         shopPicUrl: snap[keyShopPicUrl] as String?,
         type: snap[keyType] as String,
-        phoneNos: snap[keyPhoneNos] as List<String>,
-        emailIds: snap[keyEmailIds] as List<String>,
+        phoneNos: (snap[keyPhoneNos] as List)
+            .map((item) => item as String)
+            .toList(growable: false),
+        emailIds: (snap[keyEmailIds] as List)
+            .map((item) => item as String)
+            .toList(growable: false),
         address: snap[keyAddress] as String,
-        openTime: snap[keyOpenTime] as DateTime,
-        closeTime: snap[keyCloseTime] as DateTime,
+        openTime: (snap[keyOpenTime] as Timestamp).toDate(),
+        closeTime: (snap[keyCloseTime] as Timestamp).toDate(),
         isCurrentlyOpen: snap[keyIsCurrentlyOpen] as bool,
       );
 }

@@ -19,9 +19,9 @@ extension ShopSqfl on Shop {
   static const colAddress = "address";
   static const typeOfAddress = "TEXT NOT NULL";
   static const colOpenTime = "openTime";
-  static const typeOfOpenTime = "TEXT NOT NULL";
+  static const typeOfOpenTime = "INTEGER NOT NULL";
   static const colCloseTime = "closeTime";
-  static const typeOfCloseTime = "TEXT NOT NULL";
+  static const typeOfCloseTime = "INTEGER NOT NULL";
   static const colIsCurrentlyOpen = "isCurrentlyOpen";
   static const typeOfIsCurrentlyOpen = "INTEGER NOT NULL";
 
@@ -31,8 +31,8 @@ extension ShopSqfl on Shop {
         colShopPicUrl: shopPicUrl,
         colType: type,
         colAddress: address,
-        colOpenTime: openTime.toIso8601String(),
-        colCloseTime: closeTime.toIso8601String(),
+        colOpenTime: openTime.millisecondsSinceEpoch,
+        colCloseTime: closeTime.millisecondsSinceEpoch,
         colIsCurrentlyOpen: isCurrentlyOpen ? 1 : 0,
       };
 
@@ -42,8 +42,9 @@ extension ShopSqfl on Shop {
         shopPicUrl: map[colShopPicUrl] as String?,
         type: map[colType] as String,
         address: map[colAddress] as String,
-        openTime: DateTime.parse(map[colOpenTime] as String),
-        closeTime: DateTime.parse(map[colCloseTime] as String),
+        openTime: DateTime.fromMillisecondsSinceEpoch(map[colOpenTime] as int),
+        closeTime:
+            DateTime.fromMillisecondsSinceEpoch(map[colCloseTime] as int),
         isCurrentlyOpen: map[colIsCurrentlyOpen] == 1,
       );
 }

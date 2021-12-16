@@ -25,11 +25,17 @@ extension UserCfs on User {
       };
 
   static User fromSnapshot(DocumentSnapshot<Map<String, Object?>> snap) => User(
-    userId: snap.id,
+        userId: snap.id,
         name: snap[keyName] as String,
         profilePicUrl: snap[keyProfilePicUrl] as String?,
-        phoneNos: snap[keyPhoneNos] as List<String>,
-        emailIds: snap[keyEmailIds] as List<String>,
-        addresses: snap[keyAddresses] as List<String>,
+        phoneNos: (snap[keyPhoneNos] as List)
+            .map((item) => item as String)
+            .toList(growable: false),
+        emailIds: (snap[keyEmailIds] as List)
+            .map((item) => item as String)
+            .toList(growable: false),
+        addresses: (snap[keyAddresses] as List)
+            .map((item) => item as String)
+            .toList(growable: false),
       );
 }

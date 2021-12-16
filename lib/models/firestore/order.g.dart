@@ -33,8 +33,9 @@ extension OrderCfs on Order {
         orderId: snap.id,
         userId: snap[keyUserId] as String,
         shopId: snap[keyShopId] as String,
-        productIdsWithCount: snap[keyProductIdsWithCount] as Map<String, int>,
-        orderDateTime: snap[keyOrderDateTime] as DateTime,
+        productIdsWithCount: (snap[keyProductIdsWithCount] as Map)
+            .map((key, value) => MapEntry(key, (value as num).toInt())),
+        orderDateTime: (snap[keyOrderDateTime] as Timestamp).toDate(),
         phoneNo: snap[keyPhoneNo] as String,
         address: snap[keyAddress] as String,
         payMethod: snap[keyPayMethod] as String,
