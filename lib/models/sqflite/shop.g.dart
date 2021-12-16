@@ -22,8 +22,8 @@ extension ShopSqfl on Shop {
   static const typeOfOpenTime = "INTEGER NOT NULL";
   static const colCloseTime = "closeTime";
   static const typeOfCloseTime = "INTEGER NOT NULL";
-  static const colIsCurrentlyOpen = "isCurrentlyOpen";
-  static const typeOfIsCurrentlyOpen = "INTEGER NOT NULL";
+  static const colIsOpenNow = "isOpenNow";
+  static const typeOfIsOpenNow = "INTEGER NOT NULL";
 
   Map<String, Object?> toMap() => {
         colShopId: shopId,
@@ -31,20 +31,19 @@ extension ShopSqfl on Shop {
         colShopPicUrl: shopPicUrl,
         colType: type,
         colAddress: address,
-        colOpenTime: openTime.millisecondsSinceEpoch,
-        colCloseTime: closeTime.millisecondsSinceEpoch,
-        colIsCurrentlyOpen: isCurrentlyOpen ? 1 : 0,
+        colOpenTime: openTime,
+        colCloseTime: closeTime,
+        colIsOpenNow: isOpenNow ? 1 : 0,
       };
 
   static Shop fromMap(Map<String, Object?> map) => Shop(
-    shopId: map[colShopId] as String,
+        shopId: map[colShopId] as String,
         name: map[colName] as String,
         shopPicUrl: map[colShopPicUrl] as String?,
         type: map[colType] as String,
         address: map[colAddress] as String,
-        openTime: DateTime.fromMillisecondsSinceEpoch(map[colOpenTime] as int),
-        closeTime:
-            DateTime.fromMillisecondsSinceEpoch(map[colCloseTime] as int),
-        isCurrentlyOpen: map[colIsCurrentlyOpen] == 1,
+        openTime: map[colOpenTime] as int,
+        closeTime: map[colCloseTime] as int,
+        isOpenNow: map[colIsOpenNow] == 1,
       );
 }

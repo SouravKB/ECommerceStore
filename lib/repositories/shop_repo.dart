@@ -9,6 +9,7 @@ import 'package:ecommercestore/models/sqflite/shop_data.dart' as sqflite_models;
 import 'package:ecommercestore/models/sqflite/shop_owner.dart'
     as sqflite_models;
 import 'package:ecommercestore/models/ui/shop.dart';
+import 'package:ecommercestore/util/timeofday_extensions.dart';
 
 class ShopRepo {
   ShopRepo._();
@@ -30,7 +31,7 @@ class ShopRepo {
           address: cfsShop.address,
           openTime: cfsShop.openTime,
           closeTime: cfsShop.closeTime,
-          isCurrentlyOpen: cfsShop.isCurrentlyOpen);
+          isOpenNow: cfsShop.isOpenNow);
       _sqfliteShopDao.insertShop(sqflShop);
 
       for (final data in cfsShop.phoneNos) {
@@ -53,15 +54,16 @@ class ShopRepo {
 
       yield Shop(
           shopId: cfsShop.shopId,
+          ownerIds: cfsShop.ownerIds,
           name: cfsShop.name,
           shopPicUrl: cfsShop.shopPicUrl,
           type: cfsShop.type,
           emailIds: cfsShop.emailIds,
           phoneNos: cfsShop.phoneNos,
           address: cfsShop.address,
-          openTime: cfsShop.openTime,
-          closeTime: cfsShop.closeTime,
-          isCurrentlyOpen: cfsShop.isCurrentlyOpen);
+          openTime: TimeInMinutes.toTimeOfDay(cfsShop.openTime),
+          closeTime: TimeInMinutes.toTimeOfDay(cfsShop.closeTime),
+          isOpenNow: cfsShop.isOpenNow);
     }
   }
 
@@ -82,9 +84,9 @@ class ShopRepo {
       emailIds: shop.emailIds,
       phoneNos: shop.phoneNos,
       address: shop.address,
-      openTime: shop.openTime,
-      closeTime: shop.closeTime,
-      isCurrentlyOpen: shop.isCurrentlyOpen,
+      openTime: shop.openTime.inMinutes,
+      closeTime: shop.closeTime.inMinutes,
+      isOpenNow: shop.isOpenNow,
     );
     await _firestoreShopDao.setShop(cfsShop);
   }

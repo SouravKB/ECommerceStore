@@ -44,7 +44,7 @@ class OrderedItemDao {
     productId ${OrderedItemSqfl.typeOfProductId},
     count ${OrderedItemSqfl.typeOfCount},
     PRIMARY KEY(orderId, productId),
-    FOREIGN KEY(orderId) REFERENCES Order(orderId),
+    FOREIGN KEY(orderId) REFERENCES Orderr(orderId),
     FOREIGN KEY(productId) REFERENCES Product(productId)
     )
     ''');

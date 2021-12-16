@@ -15,6 +15,7 @@ extension OrderCfs on Order {
   static const keyOrderDateTime = "orderDateTime";
   static const keyPhoneNo = "phoneNo";
   static const keyAddress = "address";
+  static const keyPrice = "price";
   static const keyPayMethod = "payMethod";
 
   Map<String, Object?> toMap() => {
@@ -25,6 +26,7 @@ extension OrderCfs on Order {
         keyOrderDateTime: orderDateTime,
         keyPhoneNo: phoneNo,
         keyAddress: address,
+        keyPrice: price,
         keyPayMethod: payMethod,
       };
 
@@ -38,6 +40,7 @@ extension OrderCfs on Order {
         orderDateTime: (snap[keyOrderDateTime] as Timestamp).toDate(),
         phoneNo: snap[keyPhoneNo] as String,
         address: snap[keyAddress] as String,
+        price: (snap[keyPrice] as num).toInt(),
         payMethod: snap[keyPayMethod] as String,
       );
 }

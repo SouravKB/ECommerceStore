@@ -1,17 +1,21 @@
+import 'package:flutter/material.dart';
+
 class Shop {
   final String shopId;
+  final List<String> ownerIds;
   final String name;
   final String? shopPicUrl;
   final String type;
   final List<String> phoneNos;
   final List<String> emailIds;
   final String address;
-  final DateTime openTime;
-  final DateTime closeTime;
-  final bool isCurrentlyOpen;
+  final TimeOfDay openTime;
+  final TimeOfDay closeTime;
+  final bool isOpenNow;
 
   Shop({
     required this.shopId,
+    required this.ownerIds,
     required this.name,
     required this.shopPicUrl,
     required this.type,
@@ -20,6 +24,6 @@ class Shop {
     required this.address,
     required this.openTime,
     required this.closeTime,
-    required this.isCurrentlyOpen,
+    required this.isOpenNow,
   });
 }

@@ -28,6 +28,7 @@ class OrderRepo {
             orderDateTime: cfsOrder.orderDateTime,
             phoneNo: cfsOrder.phoneNo,
             address: cfsOrder.address,
+            price: cfsOrder.price,
             payMethod: cfsOrder.payMethod);
         _sqfliteOrderDao.insertOrder(sqflOrder);
 
@@ -42,13 +43,14 @@ class OrderRepo {
 
       yield orders
           .map((order) => Order(
-          orderId: order.orderId,
+              orderId: order.orderId,
               userId: order.userId,
               shopId: order.shopId,
               productIdsWithCount: order.productIdsWithCount,
               orderDateTime: order.orderDateTime,
               phoneNo: order.phoneNo,
               address: order.address,
+              price: order.price,
               payMethod: PaymentMethod.values.firstWhere(
                   (method) => method.toString() == order.payMethod)))
           .toList(growable: false);
@@ -66,6 +68,7 @@ class OrderRepo {
             orderDateTime: cfsOrder.orderDateTime,
             phoneNo: cfsOrder.phoneNo,
             address: cfsOrder.address,
+            price: cfsOrder.price,
             payMethod: cfsOrder.payMethod);
         _sqfliteOrderDao.insertOrder(sqflOrder);
 
@@ -80,13 +83,14 @@ class OrderRepo {
 
       yield orders
           .map((order) => Order(
-          orderId: order.orderId,
+              orderId: order.orderId,
               userId: order.userId,
               shopId: order.shopId,
               productIdsWithCount: order.productIdsWithCount,
               orderDateTime: order.orderDateTime,
               phoneNo: order.phoneNo,
               address: order.address,
+              price: order.price,
               payMethod: PaymentMethod.values.firstWhere(
                   (method) => method.toString() == order.payMethod)))
           .toList(growable: false);
@@ -102,6 +106,7 @@ class OrderRepo {
         orderDateTime: order.orderDateTime,
         phoneNo: order.phoneNo,
         address: order.address,
+        price: order.price,
         payMethod: order.payMethod.toString());
     await _firestoreOrderDao.addOrder(cfsOrder);
   }

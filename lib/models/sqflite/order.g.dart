@@ -20,6 +20,8 @@ extension OrderSqfl on Order {
   static const typeOfPhoneNo = "TEXT NOT NULL";
   static const colAddress = "address";
   static const typeOfAddress = "TEXT NOT NULL";
+  static const colPrice = "price";
+  static const typeOfPrice = "INTEGER NOT NULL";
   static const colPayMethod = "payMethod";
   static const typeOfPayMethod = "TEXT NOT NULL";
 
@@ -30,17 +32,19 @@ extension OrderSqfl on Order {
         colOrderDateTime: orderDateTime.millisecondsSinceEpoch,
         colPhoneNo: phoneNo,
         colAddress: address,
+        colPrice: price,
         colPayMethod: payMethod,
       };
 
   static Order fromMap(Map<String, Object?> map) => Order(
-    orderId: map[colOrderId] as String,
+        orderId: map[colOrderId] as String,
         userId: map[colUserId] as String,
         shopId: map[colShopId] as String,
         orderDateTime:
             DateTime.fromMillisecondsSinceEpoch(map[colOrderDateTime] as int),
         phoneNo: map[colPhoneNo] as String,
         address: map[colAddress] as String,
+        price: map[colPrice] as int,
         payMethod: map[colPayMethod] as String,
       );
 }

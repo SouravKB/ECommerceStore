@@ -35,7 +35,7 @@ class ShopDao {
     address ${ShopSqfl.typeOfAddress},
     openTime ${ShopSqfl.typeOfOpenTime},
     closeTime ${ShopSqfl.typeOfCloseTime},
-    isCurrentlyOpen ${ShopSqfl.typeOfIsCurrentlyOpen}
+    isOpenNow ${ShopSqfl.typeOfIsOpenNow}
     )
     ''');
   }

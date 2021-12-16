@@ -7,7 +7,7 @@ class OrderDao {
 
   static final instance = OrderDao._();
 
-  static const _tableOrder = 'Order';
+  static const _tableOrder = 'Orderr';
 
   Future<void> insertOrder(Order order) async {
     await (await SqfliteDatabase.instance).insert(_tableOrder, order.toMap(),
@@ -39,13 +39,14 @@ class OrderDao {
 
   static Future<void> createTable(Database db) async {
     await db.execute('''
-    CREATE TABLE Order (
+    CREATE TABLE Orderr (
     orderId ${OrderSqfl.typeOfOrderId} PRIMARY KEY,
     userId ${OrderSqfl.typeOfUserId},
     shopId ${OrderSqfl.typeOfShopId},
     orderDateTime ${OrderSqfl.typeOfOrderDateTime},
     phoneNo ${OrderSqfl.typeOfPhoneNo},
     address ${OrderSqfl.typeOfAddress},
+    price ${OrderSqfl.typeOfPrice},
     payMethod ${OrderSqfl.typeOfPayMethod},
     FOREIGN KEY(userId) REFERENCES User(userId),
     FOREIGN KEY(shopId) REFERENCES Shop(shopId)
