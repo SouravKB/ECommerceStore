@@ -43,6 +43,36 @@ class ProductRepo {
     }
   }
 
+  Stream<List<Product>> getProductListStreamForCategory(
+      String shopId, String category) async* {
+    await for (final products in _firestoreProductDao
+        .getProductListStreamForCategory(shopId, category)) {
+      for (final cfsProduct in products) {
+        final sqflProduct = sqflite_models.Product(
+            productId: cfsProduct.productId,
+            shopId: shopId,
+            name: cfsProduct.name,
+            imageUrl: cfsProduct.imageUrl,
+            shortDesc: cfsProduct.shortDesc,
+            category: cfsProduct.category,
+            price: cfsProduct.price,
+            desc: cfsProduct.desc);
+        _sqfliteProductDao.insertProduct(sqflProduct);
+      }
+
+      yield products
+          .map((product) => Product(
+              productId: product.productId,
+              name: product.name,
+              imageUrl: product.imageUrl,
+              shortDesc: product.shortDesc,
+              category: product.category,
+              price: product.price,
+              desc: product.desc))
+          .toList(growable: false);
+    }
+  }
+
   Stream<Product> getProductStream(String shopId, String productId) async* {
     await for (final cfsProduct
         in _firestoreProductDao.getProductStream(shopId, productId)) {
@@ -98,7 +128,17 @@ class ProductRepo {
     await _firestoreProductDao.setProduct(shopId, cfsProduct);
   }
 
+  Future<void> updateProductCategoryForCategory(
+      String shopId, String category, String newCategory) async {
+    await _firestoreProductDao.setProductCategoryForCategory(
+        shopId, category, newCategory);
+  }
+
   Future<void> deleteProduct(String shopId, String productId) async {
     await _firestoreProductDao.deleteProduct(shopId, productId);
+  }
+
+  Future<void> deleteProductsForCategory(String shopId, String category) async {
+    await _firestoreProductDao.deleteProductsForCategory(shopId, category);
   }
 }

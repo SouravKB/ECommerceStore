@@ -19,10 +19,16 @@ class ShopDao {
         .delete(_tableShop, where: 'shopId = ?', whereArgs: [shopId]);
   }
 
-  Future<Shop> getShop(String shopId) async {
+  Future<Shop?> getShop(String shopId) async {
     final result = await (await SqfliteDatabase.instance)
         .query(_tableShop, where: 'shopId = ?', whereArgs: [shopId]);
+    if (result.isEmpty) return null;
     return ShopSqfl.fromMap(result[0]);
+  }
+
+  Future<List<Shop>> getProductList() async {
+    final result = await (await SqfliteDatabase.instance).query(_tableShop);
+    return result.map((res) => ShopSqfl.fromMap(res)).toList(growable: false);
   }
 
   static Future<void> createTable(Database db) async {

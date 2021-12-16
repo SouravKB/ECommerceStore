@@ -14,14 +14,10 @@ class OrderDao {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<void> deleteOrder(String orderId) async {
-    await (await SqfliteDatabase.instance)
-        .delete(_tableOrder, where: 'orderId = ?', whereArgs: [orderId]);
-  }
-
-  Future<Order> getOrder(String orderId) async {
+  Future<Order?> getOrder(String orderId) async {
     final result = await (await SqfliteDatabase.instance)
         .query(_tableOrder, where: 'orderId = ?', whereArgs: [orderId]);
+    if (result.isEmpty) return null;
     return OrderSqfl.fromMap(result[0]);
   }
 

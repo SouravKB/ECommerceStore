@@ -67,6 +67,56 @@ class ShopRepo {
     }
   }
 
+  Stream<List<Shop>> getShopListStream() async* {
+    await for (final shops in _firestoreShopDao.getShopListStream()) {
+      for (final cfsShop in shops) {
+        final sqflShop = sqflite_models.Shop(
+            shopId: cfsShop.shopId,
+            name: cfsShop.name,
+            shopPicUrl: cfsShop.shopPicUrl,
+            type: cfsShop.type,
+            address: cfsShop.address,
+            openTime: cfsShop.openTime,
+            closeTime: cfsShop.closeTime,
+            isOpenNow: cfsShop.isOpenNow);
+        _sqfliteShopDao.insertShop(sqflShop);
+
+        for (final data in cfsShop.phoneNos) {
+          final shopData = sqflite_models.ShopData(
+              shopId: cfsShop.shopId, data: data, type: 'phoneNo');
+          _sqfliteShopDataDao.insertShopData(shopData);
+        }
+
+        for (final data in cfsShop.emailIds) {
+          final shopData = sqflite_models.ShopData(
+              shopId: cfsShop.shopId, data: data, type: 'emailId');
+          _sqfliteShopDataDao.insertShopData(shopData);
+        }
+
+        for (final owner in cfsShop.ownerIds) {
+          final shopOwner =
+              sqflite_models.ShopOwner(ownerId: owner, shopId: cfsShop.shopId);
+          _sqfliteShopOwnerDao.insertShopOwner(shopOwner);
+        }
+      }
+
+      yield shops
+          .map((shop) => Shop(
+              shopId: shop.shopId,
+              ownerIds: shop.ownerIds,
+              name: shop.name,
+              shopPicUrl: shop.shopPicUrl,
+              type: shop.type,
+              emailIds: shop.emailIds,
+              phoneNos: shop.phoneNos,
+              address: shop.address,
+              openTime: TimeInMinutes.toTimeOfDay(shop.openTime),
+              closeTime: TimeInMinutes.toTimeOfDay(shop.closeTime),
+              isOpenNow: shop.isOpenNow))
+          .toList(growable: false);
+    }
+  }
+
   Future<void> addShop(Shop shop) async {
     await updateShop(shop);
   }
@@ -89,5 +139,9 @@ class ShopRepo {
       isOpenNow: shop.isOpenNow,
     );
     await _firestoreShopDao.setShop(cfsShop);
+  }
+
+  Future<void> deleteShop(String shopId) async {
+    await _firestoreShopDao.deleteShop(shopId);
   }
 }

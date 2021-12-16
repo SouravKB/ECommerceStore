@@ -20,9 +20,10 @@ class ProductDao {
         .delete(_tableProduct, where: 'productId = ?', whereArgs: [productId]);
   }
 
-  Future<Product> getProduct(String productId) async {
+  Future<Product?> getProduct(String productId) async {
     final result = await (await SqfliteDatabase.instance)
         .query(_tableProduct, where: 'productId = ?', whereArgs: [productId]);
+    if (result.isEmpty) return null;
     return ProductSqfl.fromMap(result[0]);
   }
 
