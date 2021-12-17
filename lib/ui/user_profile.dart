@@ -1,61 +1,68 @@
-import 'package:ecommercestore/constants.dart';
-import 'package:ecommercestore/ui/profile_menu.dart';
 import 'package:ecommercestore/ui/profile_pic.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-
-class Body extends StatelessWidget {
+class UserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: MyAppBar(
         title: 'Profile',
-
-        actions:[
-          IconButton(icon: Icon(Icons.more_vert, color:Colors.white,),onPressed: (){})
+        actions: [
+          IconButton(
+              icon: Icon(
+                Icons.more_vert,
+                color: Colors.white,
+              ),
+              onPressed: () {})
         ],
       ),
-
-      body: SingleChildScrollView(
+      body: ListView(
         padding: EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          children: [
-            ProfilePic(),
-            SizedBox(height: 20),
-            ProfileMenu(
-              text: "My Account",
-              icon: "assets/icons/User Icon.svg",
-              press: () => {},
+        children: [
+          ProfilePic(),
+          SizedBox(height: 20),
+          InkWell(
+            onTap: () {},
+            child: ListTile(
+              title: Text('Home page'),
+              leading: Icon(Icons.home),
             ),
-            ProfileMenu(
-              text: "Ordered details",
-              icon: "assets/icons/Bell.svg",
-              press: () {},
+          ),
+          InkWell(
+            onTap: () {},
+            child: ListTile(
+              title: Text('My Orders'),
+              leading: Icon(Icons.add_shopping_cart_sharp),
             ),
-            ProfileMenu(
-              text: "Settings",
-              icon: "assets/icons/Settings.svg",
-              press: () {},
+          ),
+          InkWell(
+            onTap: () {
+
+            },
+            child: ListTile(
+              title: Text('log out'),
+              leading: Icon(Icons.logout),
             ),
-            ProfileMenu(
-              text: "Help Center",
-              icon: "assets/icons/Question mark.svg",
-              press: () {},
+          ),
+          Divider(),
+          InkWell(
+            onTap: () {},
+            child: ListTile(
+              title: Text('Settings'),
+              leading: Icon(Icons.settings),
             ),
-            ProfileMenu(
-              text: "Log Out",
-              icon: "assets/icons/Log out.svg",
-              press: () {},
+          ),
+          InkWell(
+            onTap: () {},
+            child: ListTile(
+              title: Text('Support'),
+              leading: Icon(Icons.support),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
-
   }
 }
