@@ -9,9 +9,9 @@ class Shop {
   final String? shopPicUrl;
   final String type;
   final String address;
-  final DateTime openTime;
-  final DateTime closeTime;
-  final bool isCurrentlyOpen;
+  final int openTime;
+  final int closeTime;
+  final bool isOpenNow;
 
   Shop({
     required this.shopId,
@@ -21,6 +21,6 @@ class Shop {
     required this.address,
     required this.openTime,
     required this.closeTime,
-    required this.isCurrentlyOpen,
+    required this.isOpenNow,
   });
 }

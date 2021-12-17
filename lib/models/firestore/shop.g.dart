@@ -18,7 +18,7 @@ extension ShopCfs on Shop {
   static const keyAddress = "address";
   static const keyOpenTime = "openTime";
   static const keyCloseTime = "closeTime";
-  static const keyIsCurrentlyOpen = "isCurrentlyOpen";
+  static const keyIsOpenNow = "isOpenNow";
 
   Map<String, Object?> toMap() => {
         keyShopId: shopId,
@@ -31,7 +31,7 @@ extension ShopCfs on Shop {
         keyAddress: address,
         keyOpenTime: openTime,
         keyCloseTime: closeTime,
-        keyIsCurrentlyOpen: isCurrentlyOpen,
+        keyIsOpenNow: isOpenNow,
       };
 
   static Shop fromSnapshot(DocumentSnapshot<Map<String, Object?>> snap) => Shop(
@@ -49,8 +49,8 @@ extension ShopCfs on Shop {
             .map((item) => item as String)
             .toList(growable: false),
         address: snap[keyAddress] as String,
-        openTime: (snap[keyOpenTime] as Timestamp).toDate(),
-        closeTime: (snap[keyCloseTime] as Timestamp).toDate(),
-        isCurrentlyOpen: snap[keyIsCurrentlyOpen] as bool,
+        openTime: (snap[keyOpenTime] as num).toInt(),
+        closeTime: (snap[keyCloseTime] as num).toInt(),
+        isOpenNow: snap[keyIsOpenNow] as bool,
       );
 }

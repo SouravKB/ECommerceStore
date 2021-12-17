@@ -25,6 +25,18 @@ class ProductDao {
     return _getProductColReference(shopId).doc(productId);
   }
 
+  Query<Product> _getCategoryProductReference(String shopId, String category) {
+    return FirebaseFirestore.instance
+        .collection(_keyShops)
+        .doc(shopId)
+        .collection(_keyProducts)
+        .where('category', isEqualTo: category)
+        .withConverter<Product>(
+          fromFirestore: (snap, _) => ProductCfs.fromSnapshot(snap),
+          toFirestore: (product, _) => product.toMap(),
+        );
+  }
+
   Future<String> addProduct(String shopId, Product product) async {
     final doc = await _getProductColReference(shopId).add(product);
     return doc.id;
@@ -34,8 +46,25 @@ class ProductDao {
     await _getProductReference(shopId, product.productId).set(product);
   }
 
+  Future<void> setProductCategoryForCategory(
+      String shopId, String category, String newCategory) async {
+    final queryResult =
+        await _getCategoryProductReference(shopId, category).get();
+    for (final docRef in queryResult.docs) {
+      docRef.reference.update({'category': newCategory});
+    }
+  }
+
   Future<void> deleteProduct(String shopId, String productId) async {
     await _getProductReference(shopId, productId).delete();
+  }
+
+  Future<void> deleteProductsForCategory(String shopId, String category) async {
+    final queryResult =
+        await _getCategoryProductReference(shopId, category).get();
+    for (final docRef in queryResult.docs) {
+      docRef.reference.delete();
+    }
   }
 
   Stream<Product> getProductStream(String shopId, String productId) {
@@ -46,6 +75,12 @@ class ProductDao {
 
   Stream<List<Product>> getProductListStream(String shopId) {
     return _getProductColReference(shopId).snapshots().map(
+        (snap) => snap.docs.map((doc) => doc.data()).toList(growable: false));
+  }
+
+  Stream<List<Product>> getProductListStreamForCategory(
+      String shopId, String category) {
+    return _getCategoryProductReference(shopId, category).snapshots().map(
         (snap) => snap.docs.map((doc) => doc.data()).toList(growable: false));
   }
 }

@@ -6,6 +6,7 @@ class Order {
   final DateTime orderDateTime;
   final String phoneNo;
   final String address;
+  final int price;
   final PaymentMethod payMethod;
 
   Order({
@@ -16,6 +17,7 @@ class Order {
     required this.orderDateTime,
     required this.phoneNo,
     required this.address,
+    required this.price,
     required this.payMethod,
   });
 }

@@ -17,7 +17,7 @@ class OrderDao {
         );
   }
 
-  DocumentReference<Order> getOrderReference(String orderId) {
+  DocumentReference<Order> _getOrderReference(String orderId) {
     return _getOrderColReference().doc(orderId);
   }
 
@@ -46,8 +46,8 @@ class OrderDao {
     return doc.id;
   }
 
-  Future<void> deleteOrder(String orderId) async {
-    await getOrderReference(orderId).delete();
+  Future<Order> getOrder(String orderId) {
+    return _getOrderReference(orderId).get().then((value) => value.data()!);
   }
 
   Stream<List<Order>> getOrderListStreamForUser(String userId) {

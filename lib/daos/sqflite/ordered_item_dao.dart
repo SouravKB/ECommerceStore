@@ -15,17 +15,12 @@ class OrderedItemDao {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<void> deleteOrderedItem(String orderId, String productId) async {
-    await (await SqfliteDatabase.instance).delete(_tableOrderedItem,
-        where: 'orderId = ? AND productId = ?',
-        whereArgs: [orderId, productId]);
-  }
-
-  Future<OrderedItem> getOrderedItem(String orderId, String productId) async {
+  Future<OrderedItem?> getOrderedItem(String orderId, String productId) async {
     final result = await (await SqfliteDatabase.instance).query(
         _tableOrderedItem,
         where: 'orderId = ? AND productId = ?',
         whereArgs: [orderId, productId]);
+    if (result.isEmpty) return null;
     return OrderedItemSqfl.fromMap(result[0]);
   }
 
@@ -44,7 +39,7 @@ class OrderedItemDao {
     productId ${OrderedItemSqfl.typeOfProductId},
     count ${OrderedItemSqfl.typeOfCount},
     PRIMARY KEY(orderId, productId),
-    FOREIGN KEY(orderId) REFERENCES Order(orderId),
+    FOREIGN KEY(orderId) REFERENCES Orderr(orderId),
     FOREIGN KEY(productId) REFERENCES Product(productId)
     )
     ''');

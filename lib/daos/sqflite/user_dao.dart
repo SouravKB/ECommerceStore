@@ -19,9 +19,10 @@ class UserDao {
         .delete(_tableUser, where: 'userId = ?', whereArgs: [userId]);
   }
 
-  Future<User> getUser(String userId) async {
+  Future<User?> getUser(String userId) async {
     final result = await (await SqfliteDatabase.instance)
         .query(_tableUser, where: 'userId = ?', whereArgs: [userId]);
+    if (result.isEmpty) return null;
     return UserSqfl.fromMap(result[0]);
   }
 

@@ -30,4 +30,9 @@ class ShopDao {
   Stream<Shop> getShopStream(String shopId) {
     return _getShopReference(shopId).snapshots().map((snap) => snap.data()!);
   }
+
+  Stream<List<Shop>> getShopListStream() {
+    return _getShopColReference().snapshots().map(
+        (snap) => snap.docs.map((doc) => doc.data()).toList(growable: false));
+  }
 }
