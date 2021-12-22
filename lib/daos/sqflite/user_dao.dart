@@ -31,7 +31,7 @@ class UserDao {
     CREATE TABLE User (
     userId ${UserSqfl.typeOfUserId} PRIMARY KEY,
     name ${UserSqfl.typeOfName},
-    profilePic ${UserSqfl.typeOfProfilePicUrl}
+    profilePicUrl ${UserSqfl.typeOfProfilePicUrl}
     )
     ''');
   }
