@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommercestore/models/firestore/product.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 class ProductDao {
   ProductDao._();
@@ -73,7 +74,18 @@ class ProductDao {
         .map((snap) => snap.data()!);
   }
 
-  Stream<List<Product>> getProductListStream(String shopId) {
+  Stream<List<Product>> getProductListStream(
+      String shopId, List<String> productIds) {
+    final productStreams = <Stream<Product>>[];
+    for (final productId in productIds) {
+      productStreams.add(_getProductReference(shopId, productId)
+          .snapshots()
+          .map((snap) => snap.data()!));
+    }
+    return productStreams[0].combineLatestAll(productStreams.sublist(1));
+  }
+
+  Stream<List<Product>> getProductListStreamForShop(String shopId) {
     return _getProductColReference(shopId).snapshots().map(
         (snap) => snap.docs.map((doc) => doc.data()).toList(growable: false));
   }

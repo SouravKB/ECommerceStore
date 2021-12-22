@@ -14,9 +14,39 @@ class ProductRepo {
   final _firestoreProductDao = firestore_daos.ProductDao.instance;
   final _sqfliteProductDao = sqflite_daos.ProductDao.instance;
 
-  Stream<List<Product>> getProductListStream(String shopId) async* {
+  Stream<List<Product>> getProductListStreamForShop(String shopId) async* {
     await for (final products
-        in _firestoreProductDao.getProductListStream(shopId)) {
+        in _firestoreProductDao.getProductListStreamForShop(shopId)) {
+      for (final cfsProduct in products) {
+        final sqflProduct = sqflite_models.Product(
+            productId: cfsProduct.productId,
+            shopId: shopId,
+            name: cfsProduct.name,
+            imageUrl: cfsProduct.imageUrl,
+            shortDesc: cfsProduct.shortDesc,
+            category: cfsProduct.category,
+            price: cfsProduct.price,
+            desc: cfsProduct.desc);
+        _sqfliteProductDao.insertProduct(sqflProduct);
+      }
+
+      yield products
+          .map((product) => Product(
+              productId: product.productId,
+              name: product.name,
+              imageUrl: product.imageUrl,
+              shortDesc: product.shortDesc,
+              category: product.category,
+              price: product.price,
+              desc: product.desc))
+          .toList(growable: false);
+    }
+  }
+
+  Stream<List<Product>> getProductListStreamForOrderedProducts(
+      String shopId, List<String> productIds) async* {
+    await for (final products
+        in _firestoreProductDao.getProductListStream(shopId, productIds)) {
       for (final cfsProduct in products) {
         final sqflProduct = sqflite_models.Product(
             productId: cfsProduct.productId,
@@ -99,7 +129,7 @@ class ProductRepo {
   }
 
   Stream<List<String>> getCategoriesStream(String shopId) async* {
-    await for (final _ in getProductListStream(shopId)) {
+    await for (final _ in getProductListStreamForShop(shopId)) {
       yield await _sqfliteProductDao.getCategories(shopId);
     }
   }
