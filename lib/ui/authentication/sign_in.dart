@@ -198,6 +198,9 @@ class _SignInState extends State<SignIn> {
                               }
                             }
                           })),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -207,7 +210,10 @@ class _SignInState extends State<SignIn> {
                           fontSize: 18,
                         ),
                       ),
-                      GestureDetector(
+                      InkWell(
+                        onTap: () {
+                          widget.togScreen();
+                        },
                         child: Text(
                           "Register",
                           style: TextStyle(
@@ -215,9 +221,6 @@ class _SignInState extends State<SignIn> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        onTap: () {
-                          widget.togScreen();
-                        },
                       )
                     ],
                   )

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ecommercestore/daos/firestore/order_dao.dart' as firestore_daos;
 import 'package:ecommercestore/daos/sqflite/order_dao.dart' as sqflite_daos;
 import 'package:ecommercestore/daos/sqflite/ordered_item_dao.dart'
@@ -20,6 +22,7 @@ class OrderRepo {
   Stream<List<Order>> getOrderListStreamForUser(String userId) async* {
     await for (final orders
         in _firestoreOrderDao.getOrderListStreamForUser(userId)) {
+      log('stream arrived');
       for (final cfsOrder in orders) {
         final sqflOrder = sqflite_models.Order(
             orderId: cfsOrder.orderId,
@@ -41,7 +44,7 @@ class OrderRepo {
         }
       }
 
-      yield orders
+      final x = orders
           .map((order) => Order(
               orderId: order.orderId,
               userId: order.userId,
@@ -54,6 +57,8 @@ class OrderRepo {
               payMethod: PaymentMethod.values.firstWhere(
                   (method) => method.toString() == order.payMethod)))
           .toList(growable: false);
+      log(x.length.toString());
+      yield x;
     }
   }
 

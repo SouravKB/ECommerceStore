@@ -75,7 +75,7 @@ class _RegisterState extends State<Register> {
                           Icons.person,
                           size: 30,
                         ),
-                        labelText: "NAME",
+                        labelText: "Name",
                       ),
                       onChanged: (val) {
                         setState(() {
@@ -83,9 +83,13 @@ class _RegisterState extends State<Register> {
                         });
                       },
                       maxLength: 40,
-                    ),
-                    const SizedBox(
-                      height: 10,
+                      validator: (name) {
+                        if(name.toString().isEmpty) {
+                          return 'enter the name';
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
                     MyTextFormField(
                       controller: fieldText,
@@ -101,7 +105,7 @@ class _RegisterState extends State<Register> {
                             clearText();
                           },
                         ),
-                        labelText: "EMAIL",
+                        labelText: "Email",
                       ),
                       onChanged: (val) {
                         setState(() {
@@ -129,7 +133,7 @@ class _RegisterState extends State<Register> {
                           Icons.phone,
                           size: 30,
                         ),
-                        labelText: "PHONE NUMBER",
+                        labelText: "Phone Number",
                       ),
                       onChanged: (val) {
                         setState(() {
@@ -158,7 +162,7 @@ class _RegisterState extends State<Register> {
                           Icons.lock,
                           size: 30,
                         ),
-                        labelText: "PASSWORD",
+                        labelText: "Password",
                         suffixIcon: IconButton(
                           icon: Icon(
                             // Based on passwordVisible state choose the icon
@@ -198,7 +202,7 @@ class _RegisterState extends State<Register> {
                           Icons.lock,
                           size: 30,
                         ),
-                        labelText: "CONFIRM PASSWORD",
+                        labelText: "Confirm password",
                         suffixIcon: IconButton(
                           icon: Icon(
                             // Based on passwordVisible state choose the icon
@@ -229,7 +233,7 @@ class _RegisterState extends State<Register> {
                       },
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     SizedBox(
                         height: 55,
@@ -278,6 +282,9 @@ class _RegisterState extends State<Register> {
                                 }
                               }
                             })),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

@@ -49,7 +49,7 @@ class ProfilePic extends StatelessWidget {
             ],
           ),
         ),
-        Text('profile name',style: TextStyle(fontSize:20,color: Colors.black),)
+        const Text('profile name',style: TextStyle(fontSize:20,color: Colors.black),)
       ],
     );
   }

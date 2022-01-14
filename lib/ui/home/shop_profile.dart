@@ -1,26 +1,23 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:ecommercestore/models/ui/user.dart';
-import 'package:ecommercestore/repositories/user_repo.dart';
-import 'package:ecommercestore/services/auth.dart';
-import 'package:ecommercestore/ui/home/place_order_page.dart';
-import 'package:ecommercestore/ui/home/user_order_page.dart';
-import 'package:ecommercestore/ui/home/user_shops_page.dart';
-import 'package:ecommercestore/ui/profile_pic.dart';
+import 'package:ecommercestore/models/ui/shop.dart';
+import 'package:ecommercestore/repositories/shop_repo.dart';
+import 'package:ecommercestore/ui/home/category_page.dart';
+import 'package:ecommercestore/ui/home/shop_edit.dart';
+import 'package:ecommercestore/ui/home/shop_order_page.dart';
 import 'package:ecommercestore/util/image_storing.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 
-import 'home/user_edit.dart';
+class ShopProfile extends StatelessWidget {
 
-class UserProfile extends StatelessWidget {
-  final _imageInput = ImageStoring.instance;
+  ShopProfile({Key? key,required this.shopId}) : super(key: key);
+
   File? image;
   String? imageUrl;
-  final AuthService _auth = AuthService();
-  late User user;
+  String shopId;
+  late Shop shop;
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +41,8 @@ class UserProfile extends StatelessWidget {
           ),
         ],
       ),
-      body: StreamBuilder<User>(
-        stream: UserRepo.instance
-            .getUserStream(auth.FirebaseAuth.instance.currentUser!.uid),
+      body: StreamBuilder<Shop>(
+        stream: ShopRepo.instance.getShopStream(shopId),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
@@ -68,7 +64,7 @@ class UserProfile extends StatelessWidget {
             case ConnectionState.done:
               log(snapshot.data == null ? 'null' : 'notn');
               log(snapshot.error.toString());
-              user = snapshot.data!;
+              shop = snapshot.data!;
               return ListView(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 children: [
@@ -85,19 +81,19 @@ class UserProfile extends StatelessWidget {
                               child: CircleAvatar(
                                 radius: 70,
                                 child: ClipOval(
-                                  child: snapshot.data!.profilePicUrl == null
+                                  child: snapshot.data!.shopPicUrl == null
                                       ? Image.asset(
-                                          "assets/images/profile_pic.jpg",
-                                          height: 150,
-                                          width: 150,
-                                          fit: BoxFit.cover,
-                                        )
+                                    "assets/images/profile_pic.jpg",
+                                    height: 150,
+                                    width: 150,
+                                    fit: BoxFit.cover,
+                                  )
                                       : Image.network(
-                                          snapshot.data!.profilePicUrl!,
-                                          height: 150,
-                                          width: 150,
-                                          fit: BoxFit.cover,
-                                        ),
+                                    snapshot.data!.shopPicUrl!,
+                                    height: 150,
+                                    width: 150,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                             ),
@@ -118,11 +114,11 @@ class UserProfile extends StatelessWidget {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return UserOrderPage(userId: snapshot.data!.userId);
-                      }));
+                            return ShopOrderPage(shopId: shopId,);
+                          }));
                     },
                     child: const ListTile(
-                      title: Text('My Orders'),
+                      title: Text('Shop Orders'),
                       leading: Icon(Icons.add_shopping_cart_sharp),
                     ),
                   ),
@@ -130,36 +126,12 @@ class UserProfile extends StatelessWidget {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return UserShopsPage();
-                      }));
+                            return CategoryPage(shopId: shopId);
+                          }));
                     },
                     child: const ListTile(
-                      title: Text('Shops'),
-                      leading: Icon(Icons.shop),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () async {
-                      await _auth.signOut();
-                    },
-                    child: const ListTile(
-                      title: Text('log out'),
-                      leading: Icon(Icons.logout),
-                    ),
-                  ),
-                  const Divider(),
-                  InkWell(
-                    onTap: () {},
-                    child: const ListTile(
-                      title: Text('Settings'),
-                      leading: Icon(Icons.settings),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: const ListTile(
-                      title: Text('Support'),
-                      leading: Icon(Icons.support),
+                      title: Text('products'),
+                      leading: Icon(Icons.category),
                     ),
                   ),
                 ],
@@ -170,46 +142,6 @@ class UserProfile extends StatelessWidget {
           }
         },
       ),
-      /*ListView(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            children: [
-              const ProfilePic(),
-              const SizedBox(height: 20),
-              InkWell(
-                onTap: () {
-
-                },
-                child: const ListTile(
-                  title: Text('My Orders'),
-                  leading: Icon(Icons.add_shopping_cart_sharp),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-
-                },
-                child: const ListTile(
-                  title: Text('log out'),
-                  leading: Icon(Icons.logout),
-                ),
-              ),
-              const Divider(),
-              InkWell(
-                onTap: () {},
-                child: const ListTile(
-                  title: Text('Settings'),
-                  leading: Icon(Icons.settings),
-                ),
-              ),
-              InkWell(
-                onTap: () {},
-                child: const ListTile(
-                  title: Text('Support'),
-                  leading: Icon(Icons.support),
-                ),
-              ),
-            ],
-          );*/
     );
   }
 
@@ -217,7 +149,7 @@ class UserProfile extends StatelessWidget {
     switch (item) {
       case 0:
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => UserEdit(user: user)));
+            MaterialPageRoute(builder: (context) => ShopEdit(shop: shop)));
         break;
     }
   }

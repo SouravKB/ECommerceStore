@@ -69,6 +69,7 @@ flutter:
   assets:
     - assets/imgs/test.jpeg
     - assets/images/flower.webp
+    - assets/images/profile_pic.jpg
 
   fonts:
     - family: OtomanopeeOne

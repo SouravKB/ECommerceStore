@@ -3,8 +3,6 @@ import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:ecommercestore/widgets/input_decoration.dart';
 import 'package:ecommercestore/widgets/text_form_field.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -91,7 +89,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 var result = await _auth.resetPassword(email);
                               } catch (error) {
                                 print(error.toString());
-                                return null;
+                                return;
                               }
                               Navigator.pop(context);
                             }
@@ -111,14 +109,5 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   void clearText() {
     fieldText.clear();
-  }
-
-  void _showToast(BuildContext context, String message) {
-    final scaffold = ScaffoldMessenger.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
   }
 }

@@ -23,7 +23,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SettingsTile(
                 title: 'Language',
                 subtitle: 'English',
-                leading: Icon(Icons.language),
+                leading: const Icon(Icons.language),
                 onTap: () {
 
                 },

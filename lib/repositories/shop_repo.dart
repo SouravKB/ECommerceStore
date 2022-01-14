@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ecommercestore/daos/firestore/shop_dao.dart' as firestore_daos;
 import 'package:ecommercestore/daos/sqflite/shop_dao.dart' as sqflite_daos;
 import 'package:ecommercestore/daos/sqflite/shop_data_dao.dart' as sqflite_daos;
@@ -117,7 +119,14 @@ class ShopRepo {
     }
   }
 
+  Stream<List<Shop>>  getShopListStreamForUser(String userId) async*{
+    await for(final shops in getShopListStream()) {
+      yield shops.where((shop) => shop.ownerIds.contains(userId)).toList(growable: false);
+    }
+  }
+
   Future<void> addShop(Shop shop) async {
+    log(shop.toString());
     await updateShop(shop);
   }
 

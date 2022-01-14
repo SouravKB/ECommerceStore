@@ -1,3 +1,5 @@
+import 'package:ecommercestore/ui/shop_details.dart';
+import 'package:ecommercestore/ui/user_profile.dart';
 import 'package:ecommercestore/widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -10,14 +12,12 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   var currentIndex = 0;
-  static const screens = [
-    Center(child: Text('Home', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Cart', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Profile', style: TextStyle(fontSize: 24))),
+  static final screens = [
+    ShopPage(),
+    UserProfile(),
   ];
   static const items = [
     BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-    BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
     BottomNavigationBarItem(
         icon: Icon(Icons.account_box_rounded), label: 'Profile'),
   ];
