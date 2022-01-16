@@ -3,16 +3,14 @@ import 'dart:io';
 
 import 'package:ecommercestore/models/ui/shop.dart';
 import 'package:ecommercestore/repositories/shop_repo.dart';
-import 'package:ecommercestore/ui/home/category_page.dart';
-import 'package:ecommercestore/ui/home/shop_edit.dart';
-import 'package:ecommercestore/ui/home/shop_order_page.dart';
-import 'package:ecommercestore/util/image_storing.dart';
+import 'package:ecommercestore/ui/shop/category_page.dart';
+import 'package:ecommercestore/ui/shop/shop_edit.dart';
+import 'package:ecommercestore/ui/shop/shop_order_page.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
 class ShopProfile extends StatelessWidget {
-
-  ShopProfile({Key? key,required this.shopId}) : super(key: key);
+  ShopProfile({Key? key, required this.shopId}) : super(key: key);
 
   File? image;
   String? imageUrl;

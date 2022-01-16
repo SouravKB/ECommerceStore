@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:ecommercestore/daos/firestore/shop_dao.dart';
 import 'package:ecommercestore/repositories/product_repo.dart';
-import 'package:ecommercestore/ui/home/cart_page.dart';
-import 'package:ecommercestore/ui/home/category_update.dart';
-import 'package:ecommercestore/ui/home/product_input.dart';
-import 'package:ecommercestore/ui/home/product_page.dart';
+import 'package:ecommercestore/ui/order/cart_page.dart';
+import 'package:ecommercestore/ui/product/product_input.dart';
+import 'package:ecommercestore/ui/product/product_page.dart';
+import 'package:ecommercestore/ui/shop/category_update.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -90,9 +90,11 @@ class _CategoryPageState extends State<CategoryPage> {
                 actions: [
                   IconButton(
                     icon: const Icon(Icons.shopping_cart),
-                    onPressed: () { 
-                      Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) {
-                        return CartPage(orderMap: orderMap, shopId: widget.shopId);
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return CartPage(
+                            orderMap: orderMap, shopId: widget.shopId);
                       }));
                     },
                   )

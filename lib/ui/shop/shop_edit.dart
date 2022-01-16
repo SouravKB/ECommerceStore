@@ -3,7 +3,8 @@ import 'dart:io';
 
 import 'package:ecommercestore/models/ui/shop.dart';
 import 'package:ecommercestore/repositories/shop_repo.dart';
-import 'package:ecommercestore/util/image_storing.dart';
+import 'package:ecommercestore/services/storage_service.dart';
+import 'package:ecommercestore/util/image_picker.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:ecommercestore/widgets/email_list_card.dart';
 import 'package:ecommercestore/widgets/input_decoration.dart';
@@ -31,7 +32,7 @@ class _ShopEditState extends State<ShopEdit> {
   TimeOfDay? openTime;
   String? imageUrl;
   bool? isOpenNow;
-  final _imageInput = ImageStoring.instance;
+  final _imageInput = ImageChooser.instance;
 
   @override
   void initState() {
@@ -102,8 +103,8 @@ class _ShopEditState extends State<ShopEdit> {
                       log('image input taken');
                       image = await _imageInput.getImage(true);
                       if (image != null) {
-                        imageUrl =
-                            await _imageInput.uploadFile(image!, 'users');
+                        imageUrl = await StorageService.instance
+                            .uploadFile(image!, 'users');
                       }
                     }),
                 ListTile(
@@ -112,7 +113,8 @@ class _ShopEditState extends State<ShopEdit> {
                   onTap: () async {
                     image = await _imageInput.getImage(false);
                     if (image != null) {
-                      imageUrl = await _imageInput.uploadFile(image!, 'users');
+                      imageUrl = await StorageService.instance
+                          .uploadFile(image!, 'users');
                     }
                     Navigator.of(context).pop();
                   },

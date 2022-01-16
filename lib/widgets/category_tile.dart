@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:ecommercestore/repositories/product_repo.dart';
-import 'package:ecommercestore/ui/home/category_update.dart';
+import 'package:ecommercestore/ui/shop/category_update.dart';
 import 'package:flutter/material.dart';
 
 class CategoryTile extends StatelessWidget {

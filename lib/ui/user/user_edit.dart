@@ -2,16 +2,16 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:ecommercestore/util/image_storing.dart';
 import 'package:ecommercestore/models/ui/user.dart';
 import 'package:ecommercestore/repositories/user_repo.dart';
+import 'package:ecommercestore/services/storage_service.dart';
+import 'package:ecommercestore/util/image_picker.dart';
 import 'package:ecommercestore/widgets/address_list_card.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:ecommercestore/widgets/email_list_card.dart';
 import 'package:ecommercestore/widgets/phone_list_card.dart';
 import 'package:ecommercestore/widgets/text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-
 import 'package:flutter/material.dart';
 
 class UserEdit extends StatefulWidget {
@@ -34,7 +34,7 @@ class _UserEditState extends State<UserEdit> {
   List<String>? emailIds;
   List<String>? phoneNos;
   List<String>? addresses;
-  final _imageInput = ImageStoring.instance;
+  final _imageInput = ImageChooser.instance;
 
   @override
   void initState() {
@@ -238,7 +238,8 @@ class _UserEditState extends State<UserEdit> {
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
               if (image != null) {
-                imageUrl = await _imageInput.uploadFile(image!, 'users');
+                imageUrl =
+                    await StorageService.instance.uploadFile(image!, 'users');
               }
               UserRepo.instance.updateUser(User(
                   userId: widget.user.userId,

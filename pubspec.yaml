@@ -43,7 +43,7 @@ dependencies:
 
   image_picker: ^0.8.4+4
   firebase_storage: ^10.2.3
-  settings_ui: ^1.0.0
+  settings_ui: ^2.0.1
 
 
 

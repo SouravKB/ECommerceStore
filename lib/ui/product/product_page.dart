@@ -3,14 +3,13 @@ import 'dart:developer';
 import 'package:ecommercestore/daos/firestore/shop_dao.dart';
 import 'package:ecommercestore/models/ui/product.dart';
 import 'package:ecommercestore/repositories/product_repo.dart';
-import 'package:ecommercestore/ui/home/product_input.dart';
+import 'package:ecommercestore/ui/order/cart_page.dart';
+import 'package:ecommercestore/ui/product/product_input.dart';
+import 'package:ecommercestore/util/map_extensions.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:ecommercestore/widgets/product_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommercestore/util/map_extensions.dart';
-
-import 'cart_page.dart';
 
 class ProductPage extends StatefulWidget {
   ProductPage(

@@ -1,8 +1,9 @@
-import 'package:ecommercestore/services/auth.dart';
-import 'package:provider/provider.dart';
+import 'package:ecommercestore/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'ui/wrapper.dart';
+import 'package:provider/provider.dart';
+
+import 'ui/authenticate.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,14 +19,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<String?>.value(
-      value: AuthService().userId,
+      value: AuthService.instance.userId,
       initialData: null,
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Shopstack',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const Wrapper(),
+        home: const Authenticate(),
       ),
     );
   }

@@ -1,8 +1,6 @@
-import 'package:ecommercestore/models/ui/order.dart';
 import 'package:ecommercestore/models/ui/product.dart';
-import 'package:ecommercestore/repositories/order_repo.dart';
 import 'package:ecommercestore/repositories/product_repo.dart';
-import 'package:ecommercestore/ui/home/place_order_page.dart';
+import 'package:ecommercestore/ui/order/place_order_page.dart';
 import 'package:ecommercestore/util/map_extensions.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:ecommercestore/widgets/product_card.dart';

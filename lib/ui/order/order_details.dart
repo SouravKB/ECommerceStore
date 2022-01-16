@@ -1,12 +1,12 @@
 import 'dart:developer';
 
-import 'package:ecommercestore/models/ui/shop.dart';
-import 'package:ecommercestore/models/ui/product.dart';
 import 'package:ecommercestore/models/ui/order.dart';
+import 'package:ecommercestore/models/ui/product.dart';
+import 'package:ecommercestore/models/ui/shop.dart';
 import 'package:ecommercestore/repositories/order_repo.dart';
 import 'package:ecommercestore/repositories/product_repo.dart';
 import 'package:ecommercestore/repositories/shop_repo.dart';
-import 'package:ecommercestore/ui/invoice_page.dart';
+import 'package:ecommercestore/ui/invoice/invoice_page.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:ecommercestore/widgets/product_card.dart';
 import 'package:flutter/material.dart';

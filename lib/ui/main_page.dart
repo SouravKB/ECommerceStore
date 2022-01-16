@@ -1,5 +1,5 @@
-import 'package:ecommercestore/ui/shop_details.dart';
-import 'package:ecommercestore/ui/user_profile.dart';
+import 'package:ecommercestore/ui/shop/shop_details.dart';
+import 'package:ecommercestore/ui/user/user_profile.dart';
 import 'package:ecommercestore/widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 

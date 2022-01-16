@@ -1,25 +1,29 @@
 import 'dart:developer';
 
-import 'package:ecommercestore/repositories/shop_repo.dart';
 import 'package:ecommercestore/models/ui/shop.dart';
-import 'package:ecommercestore/ui/home/category_page.dart';
-import 'package:ecommercestore/ui/home/product_page.dart';
+import 'package:ecommercestore/repositories/shop_repo.dart';
+import 'package:ecommercestore/ui/shop/shop_profile.dart';
+import 'package:ecommercestore/ui/shop/shop_register.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ShopPage extends StatelessWidget {
+class UserShopsPage extends StatelessWidget {
   final shopRepo = ShopRepo.instance;
+
+  UserShopsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: const MyAppBar(
-          title: 'Shop page',
+          title: 'User shops',
         ),
         body: StreamBuilder<List<Shop>>(
           initialData: const [],
-          stream: shopRepo.getShopListStream(),
+          stream: shopRepo
+              .getShopListStreamForUser(FirebaseAuth.instance.currentUser!.uid),
           builder: (context, snapshot) {
-            log(snapshot.data?.toString() ?? 'null+pic');
+            log(snapshot.data?.toString() ?? 'null');
             if (snapshot.data == null) {
               return const SizedBox.shrink();
             }
@@ -28,23 +32,24 @@ class ShopPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                        onTap: () {
-                          log('shop click');
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return CategoryPage(
-                                shopId: snapshot.data![index].shopId);
-                          }));
-                        },
-                        child: buildImageInteractionCard(snapshot.data![index])),
+                    child: buildImageInteractionCard(
+                        context, snapshot.data![index]),
                   );
                 });
           },
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const ShopRegister();
+            }));
+          },
+          child: const Icon(Icons.add),
+          backgroundColor: Colors.pinkAccent,
+        ),
       );
 
-  Widget buildImageInteractionCard(Shop shop) => Card(
+  Widget buildImageInteractionCard(BuildContext context, Shop shop) => Card(
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
@@ -60,9 +65,14 @@ class ShopPage extends StatelessWidget {
                         'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1327&q=80',
                   ),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return ShopProfile(shopId: shop.shopId);
+                      }));
+                    },
                   ),
-                  height: 200,
+                  height: 240,
                   fit: BoxFit.cover,
                 ),
                 Positioned(
@@ -84,10 +94,7 @@ class ShopPage extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Text(
                 shop.address,
-                style: const TextStyle(
-                    fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: const TextStyle(fontSize: 16),
               ),
             ),
           ],

@@ -1,5 +1,5 @@
-import 'package:ecommercestore/database/sqflite_database.dart';
 import 'package:ecommercestore/models/sqflite/ordered_item.dart';
+import 'package:ecommercestore/services/sqflite_database.dart';
 import 'package:sqflite/sqflite.dart';
 
 class OrderedItemDao {

@@ -1,7 +1,6 @@
-import 'dart:developer';
 
 import 'package:ecommercestore/models/ui/product.dart';
-import 'package:ecommercestore/ui/home/product_input.dart';
+import 'package:ecommercestore/ui/product/product_input.dart';
 import 'package:flutter/material.dart';
 
 /*class ProductCard extends StatefulWidget {

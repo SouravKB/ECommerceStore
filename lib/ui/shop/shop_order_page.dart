@@ -1,18 +1,18 @@
 import 'dart:developer';
 
 import 'package:ecommercestore/models/ui/order.dart';
-import 'package:ecommercestore/models/ui/user.dart';
+import 'package:ecommercestore/models/ui/shop.dart';
 import 'package:ecommercestore/repositories/order_repo.dart';
-import 'package:ecommercestore/repositories/user_repo.dart';
-import 'package:ecommercestore/ui/home/order_details.dart';
+import 'package:ecommercestore/repositories/shop_repo.dart';
+import 'package:ecommercestore/ui/order/order_details.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
-class UserOrderPage extends StatelessWidget {
-  UserOrderPage({Key? key, required this.userId}) : super(key: key);
+class ShopOrderPage extends StatelessWidget {
+  ShopOrderPage({Key? key, required this.shopId}) : super(key: key);
 
-  final String userId;
-  late final orderStream = OrderRepo.instance.getOrderListStreamForUser(userId);
+  final String shopId;
+  late final orderStream = OrderRepo.instance.getOrderListStreamForShop(shopId);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,6 @@ class UserOrderPage extends StatelessWidget {
                 );
               case ConnectionState.active:
               case ConnectionState.done:
-                log(snapshot.data?.length.toString() ?? 'null in done');
                 return ListView.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -75,9 +74,9 @@ class UserOrderPage extends StatelessWidget {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0,top: 8.0),
-                                  child: StreamBuilder<User>(
-                                      stream: UserRepo.instance
-                                          .getUserStream(orders[index].userId),
+                                  child: StreamBuilder<Shop>(
+                                      stream: ShopRepo.instance
+                                          .getShopStream(shopId),
                                       builder: (context, snapshot) {
                                         return Text(
                                           snapshot.data?.name ?? '',

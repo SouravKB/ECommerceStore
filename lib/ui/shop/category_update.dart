@@ -117,7 +117,7 @@ class _CategoryUpdateState extends State<CategoryUpdate> {
 import 'dart:io';
 
 import 'package:ecommercestore/repositories/product_repo.dart';
-import 'package:ecommercestore/util/image_storing.dart';
+import 'package:ecommercestore/util/image_picker.dart';
 import 'package:ecommercestore/ui/home/category_page.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:ecommercestore/widgets/input_decoration.dart';

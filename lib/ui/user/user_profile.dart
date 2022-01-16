@@ -3,23 +3,18 @@ import 'dart:io';
 
 import 'package:ecommercestore/models/ui/user.dart';
 import 'package:ecommercestore/repositories/user_repo.dart';
-import 'package:ecommercestore/services/auth.dart';
-import 'package:ecommercestore/ui/home/place_order_page.dart';
-import 'package:ecommercestore/ui/home/user_order_page.dart';
-import 'package:ecommercestore/ui/home/user_shops_page.dart';
-import 'package:ecommercestore/ui/profile_pic.dart';
-import 'package:ecommercestore/util/image_storing.dart';
+import 'package:ecommercestore/services/auth_service.dart';
+import 'package:ecommercestore/ui/user/user_edit.dart';
+import 'package:ecommercestore/ui/user/user_order_page.dart';
+import 'package:ecommercestore/ui/user/user_shops_page.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 
-import 'home/user_edit.dart';
-
 class UserProfile extends StatelessWidget {
-  final _imageInput = ImageStoring.instance;
   File? image;
   String? imageUrl;
-  final AuthService _auth = AuthService();
+  final AuthService _auth = AuthService.instance;
   late User user;
 
   @override
@@ -140,7 +135,7 @@ class UserProfile extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () async {
-                      await _auth.signOut();
+                      await _auth.logout();
                     },
                     child: const ListTile(
                       title: Text('log out'),

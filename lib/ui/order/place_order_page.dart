@@ -1,8 +1,8 @@
-import 'package:ecommercestore/models/ui/user.dart';
 import 'package:ecommercestore/models/ui/order.dart';
+import 'package:ecommercestore/models/ui/user.dart';
 import 'package:ecommercestore/repositories/order_repo.dart';
 import 'package:ecommercestore/repositories/user_repo.dart';
-import 'package:ecommercestore/ui/home/user_edit.dart';
+import 'package:ecommercestore/ui/user/user_edit.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';

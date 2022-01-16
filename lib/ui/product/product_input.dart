@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:ecommercestore/util/image_storing.dart';
 import 'package:ecommercestore/models/ui/product.dart';
 import 'package:ecommercestore/repositories/product_repo.dart';
+import 'package:ecommercestore/util/image_picker.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:ecommercestore/widgets/input_decoration.dart';
 import 'package:ecommercestore/widgets/text_form_field.dart';
@@ -36,7 +36,7 @@ class _ProductInputState extends State<ProductInput> {
   String? desc;
   File? image;
   String? category;
-  final _imageInput = ImageStoring.instance;
+  final _imageInput = ImageChooser.instance;
 
   @override
   void initState() {
