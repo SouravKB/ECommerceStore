@@ -1,7 +1,5 @@
-import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/material.dart';
-
-
+import 'package:settings_ui/settings_ui.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -18,49 +16,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: SettingsList(
         sections: [
           SettingsSection(
-            title: 'Common',
+            title: Text('Common'),
             tiles: [
               SettingsTile(
-                title: 'Language',
-                subtitle: 'English',
+                title: Text('Language'),
+                value: Text('English'),
                 leading: Icon(Icons.language),
-                onTap: () {
-
-                },
+                onPressed: (context) {},
               ),
-
             ],
           ),
           SettingsSection(
-            title: 'Account',
+            title: Text('Account'),
             tiles: [
-              SettingsTile(title: 'Phone number', leading: Icon(Icons.phone),onTap: () {
-
-              },),
-              SettingsTile(title: 'Email', leading: Icon(Icons.email),onTap: () {
-
-              },),
-              SettingsTile(title: 'Sign out', leading: Icon(Icons.exit_to_app),onTap: () {
-
-              },),
+              SettingsTile(
+                title: Text('Phone number'),
+                leading: Icon(Icons.phone),
+                onPressed: (context) {},
+              ),
+              SettingsTile(
+                title: Text('Email'),
+                leading: Icon(Icons.email),
+                onPressed: (context) {},
+              ),
+              SettingsTile(
+                title: Text('Sign out'),
+                leading: Icon(Icons.exit_to_app),
+                onPressed: (context) {},
+              ),
             ],
           ),
           SettingsSection(
-            title: 'Secutiry',
+            title: Text('Secutiry'),
             tiles: [
-
               SettingsTile.switchTile(
-                title: 'Change password',
-                leading: Icon(Icons.lock),
-                switchValue: lockInBackground,
-                onToggle: (bool value) {
-                     setState(() {
+                  title: Text('Change password'),
+                  leading: Icon(Icons.lock),
+                  initialValue: lockInBackground,
+                  onToggle: (bool value) {
+                    setState(() {
                       lockInBackground = value;
-                  }
-      );
-    }
-
-              ),
+                    });
+                  }),
             ],
           ),
 
