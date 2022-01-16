@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 
 class Shop {
   final String shopId;
@@ -9,6 +10,7 @@ class Shop {
   final List<String> phoneNos;
   final List<String> emailIds;
   final String address;
+  final Location location;
   final TimeOfDay openTime;
   final TimeOfDay closeTime;
   final bool isOpenNow;
@@ -22,6 +24,7 @@ class Shop {
     required this.phoneNos,
     required this.emailIds,
     required this.address,
+    required this.location,
     required this.openTime,
     required this.closeTime,
     required this.isOpenNow,

@@ -16,6 +16,7 @@ extension ShopCfs on Shop {
   static const keyPhoneNos = "phoneNos";
   static const keyEmailIds = "emailIds";
   static const keyAddress = "address";
+  static const keyLocation = "location";
   static const keyOpenTime = "openTime";
   static const keyCloseTime = "closeTime";
   static const keyIsOpenNow = "isOpenNow";
@@ -29,6 +30,7 @@ extension ShopCfs on Shop {
         keyPhoneNos: phoneNos,
         keyEmailIds: emailIds,
         keyAddress: address,
+        keyLocation: location,
         keyOpenTime: openTime,
         keyCloseTime: closeTime,
         keyIsOpenNow: isOpenNow,
@@ -49,6 +51,7 @@ extension ShopCfs on Shop {
             .map((item) => item as String)
             .toList(growable: false),
         address: snap[keyAddress] as String,
+        location: snap[keyLocation] as GeoPoint,
         openTime: (snap[keyOpenTime] as num).toInt(),
         closeTime: (snap[keyCloseTime] as num).toInt(),
         isOpenNow: snap[keyIsOpenNow] as bool,
