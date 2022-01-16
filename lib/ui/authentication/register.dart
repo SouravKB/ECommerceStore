@@ -1,32 +1,30 @@
-import 'dart:developer';
-
-import 'package:ecommercestore/services/auth.dart';
+import 'package:ecommercestore/models/ui/user.dart';
+import 'package:ecommercestore/repositories/user_repo.dart';
+import 'package:ecommercestore/services/auth_service.dart';
+import 'package:ecommercestore/ui/authentication/login.dart';
+import 'package:ecommercestore/util/toast.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
-import 'package:ecommercestore/widgets/input_decoration.dart';
-import 'package:ecommercestore/widgets/text_form_field.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ecommercestore/widgets/login_form_hint_text_style.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
-  final Function togScreen;
-
-  const Register({Key? key, required this.togScreen}) : super(key: key);
+  const Register({Key? key}) : super(key: key);
 
   @override
   _RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
-  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  String _name = '';
+  String _email = '';
+  String _phoneNo = '';
+  String _password = '';
+  String _confirmPassword = '';
 
-  //text field state
-  String email='';
-  String password = '';
-  String confirmPassword='';
-  String? name ;
-  String phoneNo='';
+  final _emailTextController = TextEditingController();
   bool _passwordObscureText = true;
   bool _confirmPasswordObscureText = true;
 
@@ -45,11 +43,14 @@ class _RegisterState extends State<Register> {
           child: Center(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(25),
+                padding: const EdgeInsets.all(24),
                 child: Column(
                   children: [
-                    const SizedBox(
-                      height: 30,
+                    const SizedBox(height: 30),
+                    const Icon(
+                      Icons.person_outlined,
+                      color: Colors.grey,
+                      size: 140,
                     ),
                     const Text(
                       "Create account",
@@ -59,237 +60,188 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                     const Text(
-                      "Create new account to continue",
+                      "Create account to continue",
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w500,
                         color: Colors.grey,
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    MyTextFormField(
-                      decoration: const MyInputDecoration(
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      autofillHints: const [AutofillHints.name],
+                      decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.person,
                           size: 30,
                         ),
-                        labelText: "NAME",
+                        labelText: "Name",
+                        labelStyle: LoginFormHintTextStyle(),
                       ),
                       onChanged: (val) {
-                        setState(() {
-                          name = val;
-                        });
+                        setState(() => _name = val);
                       },
-                      maxLength: 40,
+                      validator: (name) {
+                        if (name == null || name.isEmpty) {
+                          return 'Enter your name';
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    MyTextFormField(
-                      controller: fieldText,
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _emailTextController,
                       autofillHints: const [AutofillHints.email],
-                      decoration: MyInputDecoration(
+                      decoration: InputDecoration(
                         prefixIcon: const Icon(
                           Icons.mail,
                           size: 30,
                         ),
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.close),
-                          onPressed: () {
-                            clearText();
-                          },
+                          onPressed: () => _emailTextController.clear(),
                         ),
-                        labelText: "EMAIL",
+                        labelText: "Email",
+                        labelStyle: const LoginFormHintTextStyle(),
                       ),
                       onChanged: (val) {
-                        setState(() {
-                          email = val;
-                        });
+                        setState(() => _email = val);
                       },
                       validator: (email) {
-                        if(email.length==0){
-                          return 'Please enter the email id';
-                        }
-                        else if(!EmailValidator.validate(email)){
-                          return 'Please enter a valid email id';
-                        }
-                        else {
-                          return null;
-                        }
+                        return !EmailValidator.validate(email ?? '')
+                            ? 'Enter valid email'
+                            : null;
                       },
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    MyTextFormField(
-                      decoration: const MyInputDecoration(
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      autofillHints: const [AutofillHints.telephoneNumber],
+                      decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.phone,
                           size: 30,
                         ),
-                        labelText: "PHONE NUMBER",
+                        labelText: "Phone Number",
+                        labelStyle: LoginFormHintTextStyle(),
                       ),
                       onChanged: (val) {
-                        setState(() {
-                          phoneNo = val;
-                        });
-                      },
-                      validator: (value){
-                        String pattern = r'^(?:[+0]9)?[0-9]{10}$';
-                        RegExp regExp = RegExp(pattern);
-                        if (value.length == 0) {
-                          return 'Please enter mobile number';
-                        }
-                        else if (!regExp.hasMatch(value)) {
-                          return 'Please enter valid mobile number';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    MyTextFormField(
-                      obscureText: _passwordObscureText,
-                      decoration: MyInputDecoration(
-                        prefixIcon: const Icon(
-                          Icons.lock,
-                          size: 30,
-                        ),
-                        labelText: "PASSWORD",
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            // Based on passwordVisible state choose the icon
-                            _passwordObscureText
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: Theme.of(context).primaryColorDark,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _passwordObscureText = !_passwordObscureText;
-                            });
-                          },
-                        ),
-                      ),
-                      onChanged: (val) {
-                        setState(() {
-                          password = val;
-                        });
+                        setState(() => _phoneNo = val);
                       },
                       validator: (value) {
-                        if(value.length<8){
-                          return 'enter minimum 8 characters';
-                        }
-                        else {
-                          return null;
-                        }
+                        const pattern = r'^(?:\+91)?[0-9]{10}$';
+                        return !RegExp(pattern).hasMatch(value ?? '')
+                            ? 'Enter valid phone number'
+                            : null;
                       },
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    MyTextFormField(
-                      obscureText: _confirmPasswordObscureText,
-                      decoration: MyInputDecoration(
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      decoration: InputDecoration(
                         prefixIcon: const Icon(
                           Icons.lock,
                           size: 30,
                         ),
-                        labelText: "CONFIRM PASSWORD",
+                        labelText: "Password",
+                        labelStyle: const LoginFormHintTextStyle(),
                         suffixIcon: IconButton(
-                          icon: Icon(
-                            // Based on passwordVisible state choose the icon
-                            _confirmPasswordObscureText
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: Theme.of(context).primaryColorDark,
-                          ),
+                          icon: Icon(_passwordObscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off),
                           onPressed: () {
-                            setState(() {
-                              _confirmPasswordObscureText = !_confirmPasswordObscureText;
-                            });
+                            setState(() =>
+                                _passwordObscureText = !_passwordObscureText);
                           },
                         ),
                       ),
+                      obscureText: _passwordObscureText,
                       onChanged: (val) {
-                        setState(() {
-                          confirmPassword = val;
-                        });
+                        setState(() => _password = val);
                       },
-                      validator: (value){
-                        if(value!=password){
-                          return 'please confirm correct password';
-                        }
-                        else {
+                      validator: (value) {
+                        if (value == null || value.length < 8) {
+                          return 'Password must be at least 8 characters';
+                        } else {
                           return null;
                         }
                       },
                     ),
-                    const SizedBox(
-                      height: 10,
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          Icons.lock,
+                          size: 30,
+                        ),
+                        labelText: "Confirm password",
+                        labelStyle: const LoginFormHintTextStyle(),
+                        suffixIcon: IconButton(
+                          icon: Icon(_confirmPasswordObscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          onPressed: () {
+                            setState(() => _confirmPasswordObscureText =
+                                !_confirmPasswordObscureText);
+                          },
+                        ),
+                      ),
+                      obscureText: _confirmPasswordObscureText,
+                      onChanged: (val) {
+                        setState(() => _confirmPassword = val);
+                      },
+                      validator: (value) {
+                        if (value != _password) {
+                          return 'Password mismatch';
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
+                    const SizedBox(height: 20),
                     SizedBox(
-                        height: 55,
-                        width: double.infinity,
-                        child: TextButton(
-                            style: TextButton.styleFrom(
-                                backgroundColor: Theme.of(context).primaryColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                )),
-                            child: const Text(
-                              "Register",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                try {
-                                  var result =
-                                      await _auth.registerWithEmailAndPassword(
-                                          name,email, password,phoneNo);
-                                } on FirebaseAuthException catch (error) {
-                                  log(error.code);
-                                  switch (error.code) {
-                                    case "email-already-in-use":
-                                      _showToast(context,
-                                          "Email already used. Go to login page.");
-                                      break;
-                                    case "operation-not-allowed":
-                                      _showToast(context,
-                                          "Server error, please try again later.");
-                                      break;
-                                    case "invalid-email":
-                                      _showToast(
-                                          context, "Email address is invalid.");
-                                      break;
-                                    case "weak-password":
-                                      _showToast(
-                                          context, "Enter the strong password");
-                                      break;
-                                    default:
-                                      _showToast(context,
-                                          "Login failed. Please try again.");
-                                  }
-                                }
-                              }
-                            })),
+                      height: 55,
+                      width: double.infinity,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            )),
+                        child: const Text(
+                          "Register",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            try {
+                              var uid = await AuthService.instance
+                                  .registerWithEmailAndPassword(
+                                      _email, _password);
+                              final user =
+                                  _newUser(uid!, _name, _email, _phoneNo);
+                              UserRepo.instance.addUser(user);
+                            } on auth.FirebaseAuthException catch (error) {
+                              _handleRegisterError(error.code);
+                            }
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Already have an account",
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        GestureDetector(
+                        const Text("Already have an account?  "),
+                        InkWell(
                           onTap: () {
-                            widget.togScreen();
+                            Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                              builder: (context) => const Login(),
+                            ));
                           },
                           child: Text(
                             "Login",
@@ -311,18 +263,33 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  final fieldText = TextEditingController();
-
-  void clearText() {
-    fieldText.clear();
+  void _handleRegisterError(String errorCode) {
+    switch (errorCode) {
+      case "email-already-in-use":
+        showToast(context, "Entered email is already in use");
+        break;
+      case "operation-not-allowed":
+        showToast(context, "Server error, please try again later");
+        break;
+      case "invalid-email":
+        showToast(context, "Entered email is invalid");
+        break;
+      case "weak-password":
+        showToast(context, "Entered password is too weak");
+        break;
+      default:
+        showToast(context, "Register failed, please try again later");
+    }
   }
 
-  void _showToast(BuildContext context, String message) {
-    final scaffold = ScaffoldMessenger.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
+  User _newUser(String uid, String name, String email, String phoneNo) {
+    return User(
+      userId: uid,
+      name: name,
+      profilePicUrl: null,
+      emailIds: [email],
+      phoneNos: [phoneNo],
+      addresses: [],
     );
   }
 }

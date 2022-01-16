@@ -114,7 +114,7 @@ class ShopRepo {
 
       yield shops
           .map((shop) => Shop(
-              shopId: shop.shopId,
+          shopId: shop.shopId,
               ownerIds: shop.ownerIds,
               name: shop.name,
               shopPicUrl: shop.shopPicUrl,
@@ -130,6 +130,14 @@ class ShopRepo {
               openTime: TimeInMinutes.toTimeOfDay(shop.openTime),
               closeTime: TimeInMinutes.toTimeOfDay(shop.closeTime),
               isOpenNow: shop.isOpenNow))
+          .toList(growable: false);
+    }
+  }
+
+  Stream<List<Shop>> getShopListStreamForUser(String userId) async* {
+    await for (final shops in getShopListStream()) {
+      yield shops
+          .where((shop) => shop.ownerIds.contains(userId))
           .toList(growable: false);
     }
   }

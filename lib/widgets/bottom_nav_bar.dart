@@ -1,3 +1,4 @@
+import 'package:ecommercestore/constants.dart';
 import 'package:flutter/material.dart';
 
 class MyBottomNavigationBar extends StatelessWidget {
@@ -16,7 +17,7 @@ class MyBottomNavigationBar extends StatelessWidget {
         onTap: onTap,
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.blue,
+        backgroundColor: primaryColor,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white70);
   }

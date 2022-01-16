@@ -30,17 +30,19 @@ extension OrderCfs on Order {
         keyPayMethod: payMethod,
       };
 
-  static Order fromSnapshot(DocumentSnapshot<Map<String, Object?>> snap) =>
-      Order(
-        orderId: snap.id,
-        userId: snap[keyUserId] as String,
-        shopId: snap[keyShopId] as String,
-        productIdsWithCount: (snap[keyProductIdsWithCount] as Map)
-            .map((key, value) => MapEntry(key, (value as num).toInt())),
-        orderDateTime: (snap[keyOrderDateTime] as Timestamp).toDate(),
-        phoneNo: snap[keyPhoneNo] as String,
-        address: snap[keyAddress] as String,
-        price: (snap[keyPrice] as num).toInt(),
-        payMethod: snap[keyPayMethod] as String,
-      );
+  static Order fromSnapshot(DocumentSnapshot<Map<String, Object?>> snap) {
+    log(snap.data().toString());
+    return Order(
+      orderId: snap.id,
+      userId: snap[keyUserId] as String,
+      shopId: snap[keyShopId] as String,
+      productIdsWithCount: (snap[keyProductIdsWithCount] as Map)
+          .map((key, value) => MapEntry(key, (value as num).toInt())),
+      orderDateTime: (snap[keyOrderDateTime] as Timestamp).toDate(),
+      phoneNo: snap[keyPhoneNo] as String,
+      address: snap[keyAddress] as String,
+      price: (snap[keyPrice] as num).toInt(),
+      payMethod: snap[keyPayMethod] as String,
+    );
+  }
 }

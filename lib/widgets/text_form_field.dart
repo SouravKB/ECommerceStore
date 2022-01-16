@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyTextFormField extends StatelessWidget {
@@ -12,9 +11,9 @@ class MyTextFormField extends StatelessWidget {
     this.autofillHints,
     this.validator,
     this.style=const TextStyle(
-      color: Colors.indigoAccent,
-      fontWeight: FontWeight.bold,
-      fontSize: 22,
+      color: Colors.black,
+      fontWeight: FontWeight.w400,
+      fontSize: 17,
     ),
     this.onChanged,
     this.onTap,

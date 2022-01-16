@@ -5,21 +5,23 @@ import 'package:location/location.dart';
 class LocationService {
   LocationService._();
 
+  static final _loc = _initLocationService();
+
   static Future<Location?> _initLocationService() async {
     final location = Location();
 
-    var _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
+    var isEnabled = await location.serviceEnabled();
+    if (!isEnabled) {
+      isEnabled = await location.requestService();
+      if (!isEnabled) {
         return null;
       }
     }
 
-    var _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+    var permStatus = await location.hasPermission();
+    if (permStatus == PermissionStatus.denied) {
+      permStatus = await location.requestPermission();
+      if (permStatus != PermissionStatus.granted) {
         return null;
       }
     }
@@ -27,13 +29,16 @@ class LocationService {
     return location;
   }
 
-  static final instance = _initLocationService();
-}
-
-extension LocStream on Location {
-  Stream<LocationData> getLocationStream() {
-    final controller = StreamController<LocationData>();
-    onLocationChanged.listen(controller.add);
-    return controller.stream;
+  Future<LocationData?> getLocation() async {
+    final loc = await _loc;
+    if (loc != null) return loc.getLocation();
+    return null;
   }
+
+  Stream<LocationData?> getLocationStream() async* {
+    final loc = await _loc;
+    if (loc != null) yield* loc.onLocationChanged;
+  }
+
+  static final instance = LocationService._();
 }

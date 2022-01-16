@@ -7,7 +7,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       : super(key: key);
 
   final String title;
-  final List<IconButton>? actions;
+  final List<Widget>? actions;
   final IconButton? leadingAction;
 
   @override
