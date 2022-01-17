@@ -16,6 +16,7 @@ extension ShopCfs on Shop {
   static const keyPhoneNos = "phoneNos";
   static const keyEmailIds = "emailIds";
   static const keyAddress = "address";
+  static const keyLocation = "location";
   static const keyOpenTime = "openTime";
   static const keyCloseTime = "closeTime";
   static const keyIsOpenNow = "isOpenNow";
@@ -29,31 +30,30 @@ extension ShopCfs on Shop {
         keyPhoneNos: phoneNos,
         keyEmailIds: emailIds,
         keyAddress: address,
+        keyLocation: location,
         keyOpenTime: openTime,
         keyCloseTime: closeTime,
         keyIsOpenNow: isOpenNow,
       };
 
-  static Shop fromSnapshot(DocumentSnapshot<Map<String, Object?>> snap) {
-    log(snap.data().toString());
-    return Shop(
-      shopId: snap.id,
-      ownerIds: (snap[keyOwnerIds] as List)
-          .map((item) => item as String)
-          .toList(growable: false),
-      name: snap[keyName] as String,
-      shopPicUrl: snap[keyShopPicUrl] as String?,
-      type: snap[keyType] as String,
-      phoneNos: (snap[keyPhoneNos] as List)
-          .map((item) => item as String)
-          .toList(growable: false),
-      emailIds: (snap[keyEmailIds] as List)
-          .map((item) => item as String)
-          .toList(growable: false),
-      address: snap[keyAddress] as String,
-      openTime: (snap[keyOpenTime] as num).toInt(),
-      closeTime: (snap[keyCloseTime] as num).toInt(),
-      isOpenNow: snap[keyIsOpenNow] as bool,
-    );
-  }
+  static Shop fromSnapshot(DocumentSnapshot<Map<String, Object?>> snap) => Shop(
+        shopId: snap.id,
+        ownerIds: (snap[keyOwnerIds] as List)
+            .map((item) => item as String)
+            .toList(growable: false),
+        name: snap[keyName] as String,
+        shopPicUrl: snap[keyShopPicUrl] as String?,
+        type: snap[keyType] as String,
+        phoneNos: (snap[keyPhoneNos] as List)
+            .map((item) => item as String)
+            .toList(growable: false),
+        emailIds: (snap[keyEmailIds] as List)
+            .map((item) => item as String)
+            .toList(growable: false),
+        address: snap[keyAddress] as String,
+        location: snap[keyLocation] as GeoPoint,
+        openTime: (snap[keyOpenTime] as num).toInt(),
+        closeTime: (snap[keyCloseTime] as num).toInt(),
+        isOpenNow: snap[keyIsOpenNow] as bool,
+      );
 }

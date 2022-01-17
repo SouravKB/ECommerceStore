@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommercestore/daos/firestore/shop_dao.dart' as firestore_daos;
 import 'package:ecommercestore/daos/sqflite/shop_dao.dart' as sqflite_daos;
 import 'package:ecommercestore/daos/sqflite/shop_data_dao.dart' as sqflite_daos;
@@ -11,7 +10,9 @@ import 'package:ecommercestore/models/sqflite/shop_data.dart' as sqflite_models;
 import 'package:ecommercestore/models/sqflite/shop_owner.dart'
     as sqflite_models;
 import 'package:ecommercestore/models/ui/shop.dart';
+import 'package:ecommercestore/util/location_extensions.dart';
 import 'package:ecommercestore/util/timeofday_extensions.dart';
+import 'package:geocoding/geocoding.dart';
 
 class ShopRepo {
   ShopRepo._();
@@ -31,6 +32,8 @@ class ShopRepo {
           shopPicUrl: cfsShop.shopPicUrl,
           type: cfsShop.type,
           address: cfsShop.address,
+          location:
+              '${cfsShop.location.latitude} ${cfsShop.location.longitude}',
           openTime: cfsShop.openTime,
           closeTime: cfsShop.closeTime,
           isOpenNow: cfsShop.isOpenNow);
@@ -63,6 +66,11 @@ class ShopRepo {
           emailIds: cfsShop.emailIds,
           phoneNos: cfsShop.phoneNos,
           address: cfsShop.address,
+          location: Location(
+            latitude: cfsShop.location.latitude,
+            longitude: cfsShop.location.longitude,
+            timestamp: DateTime.now(),
+          ),
           openTime: TimeInMinutes.toTimeOfDay(cfsShop.openTime),
           closeTime: TimeInMinutes.toTimeOfDay(cfsShop.closeTime),
           isOpenNow: cfsShop.isOpenNow);
@@ -78,6 +86,8 @@ class ShopRepo {
             shopPicUrl: cfsShop.shopPicUrl,
             type: cfsShop.type,
             address: cfsShop.address,
+            location:
+                '${cfsShop.location.latitude} ${cfsShop.location.longitude}',
             openTime: cfsShop.openTime,
             closeTime: cfsShop.closeTime,
             isOpenNow: cfsShop.isOpenNow);
@@ -104,7 +114,7 @@ class ShopRepo {
 
       yield shops
           .map((shop) => Shop(
-              shopId: shop.shopId,
+          shopId: shop.shopId,
               ownerIds: shop.ownerIds,
               name: shop.name,
               shopPicUrl: shop.shopPicUrl,
@@ -112,6 +122,11 @@ class ShopRepo {
               emailIds: shop.emailIds,
               phoneNos: shop.phoneNos,
               address: shop.address,
+              location: Location(
+                latitude: shop.location.latitude,
+                longitude: shop.location.longitude,
+                timestamp: DateTime.now(),
+              ),
               openTime: TimeInMinutes.toTimeOfDay(shop.openTime),
               closeTime: TimeInMinutes.toTimeOfDay(shop.closeTime),
               isOpenNow: shop.isOpenNow))
@@ -119,14 +134,24 @@ class ShopRepo {
     }
   }
 
-  Stream<List<Shop>>  getShopListStreamForUser(String userId) async*{
-    await for(final shops in getShopListStream()) {
-      yield shops.where((shop) => shop.ownerIds.contains(userId)).toList(growable: false);
+  Stream<List<Shop>> getShopListStreamForUser(String userId) async* {
+    await for (final shops in getShopListStream()) {
+      yield shops
+          .where((shop) => shop.ownerIds.contains(userId))
+          .toList(growable: false);
     }
   }
 
+  Stream<List<Shop>> getShopListStreamSortedDistance(Location userLoc) {
+    return getShopListStream().map((shops) {
+      shops.sort((s1, s2) => userLoc.distanceFrom(s1.location).compareTo(
+            userLoc.distanceFrom(s2.location),
+          ));
+      return shops;
+    });
+  }
+
   Future<void> addShop(Shop shop) async {
-    log(shop.toString());
     await updateShop(shop);
   }
 
@@ -143,6 +168,7 @@ class ShopRepo {
       emailIds: shop.emailIds,
       phoneNos: shop.phoneNos,
       address: shop.address,
+      location: GeoPoint(shop.location.latitude, shop.location.longitude),
       openTime: shop.openTime.inMinutes,
       closeTime: shop.closeTime.inMinutes,
       isOpenNow: shop.isOpenNow,

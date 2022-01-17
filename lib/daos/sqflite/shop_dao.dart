@@ -39,6 +39,7 @@ class ShopDao {
     shopPicUrl ${ShopSqfl.typeOfShopPicUrl},
     type ${ShopSqfl.typeOfType},
     address ${ShopSqfl.typeOfAddress},
+    location ${ShopSqfl.typeOfLocation},
     openTime ${ShopSqfl.typeOfOpenTime},
     closeTime ${ShopSqfl.typeOfCloseTime},
     isOpenNow ${ShopSqfl.typeOfIsOpenNow}
