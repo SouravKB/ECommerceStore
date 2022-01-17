@@ -2,9 +2,12 @@ import 'dart:developer';
 
 import 'package:ecommercestore/models/ui/shop.dart';
 import 'package:ecommercestore/repositories/shop_repo.dart';
+import 'package:ecommercestore/services/location_service.dart';
 import 'package:ecommercestore/ui/shop/category_page.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart' as geo;
+import 'package:location/location.dart';
 
 class ShopPage extends StatelessWidget {
   final shopRepo = ShopRepo.instance;
@@ -14,33 +17,45 @@ class ShopPage extends StatelessWidget {
         appBar: const MyAppBar(
           title: 'Shop page',
         ),
-        body: StreamBuilder<List<Shop>>(
-          initialData: const [],
-          stream: shopRepo.getShopListStream(),
-          builder: (context, snapshot) {
-            log(snapshot.data?.toString() ?? 'null+pic');
-            if (snapshot.data == null) {
-              return const SizedBox.shrink();
-            }
-            return ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                        onTap: () {
-                          log('shop click');
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return CategoryPage(
-                                shopId: snapshot.data![index].shopId);
-                          }));
-                        },
-                        child: buildImageInteractionCard(snapshot.data![index])),
-                  );
-                });
-          },
-        ),
+        body: StreamBuilder<LocationData?>(
+            initialData: null,
+            stream: LocationService.instance.getLocationStream(),
+            builder: (context, snapshot) {
+              return StreamBuilder<List<Shop>>(
+                initialData: const [],
+                stream: snapshot.data == null
+                    ? shopRepo.getShopListStream()
+                    : shopRepo.getShopListStreamSortedDistance(geo.Location(
+                        latitude: snapshot.data!.latitude!,
+                        longitude: snapshot.data!.longitude!,
+                        timestamp: DateTime.now(),
+                      )),
+                builder: (context, snapshot) {
+                  log(snapshot.data?.toString() ?? 'null+pic');
+                  if (snapshot.data == null) {
+                    return const SizedBox.shrink();
+                  }
+                  return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                              onTap: () {
+                                log('shop click');
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return CategoryPage(
+                                      shopId: snapshot.data![index].shopId);
+                                }));
+                              },
+                              child: buildImageInteractionCard(
+                                  snapshot.data![index])),
+                        );
+                      });
+                },
+              );
+            }),
       );
 
   Widget buildImageInteractionCard(Shop shop) => Card(
@@ -84,7 +99,7 @@ class ShopPage extends StatelessWidget {
               child: Text(
                 shop.address,
                 style: const TextStyle(
-                    fontSize: 15,
+                  fontSize: 15,
                   fontWeight: FontWeight.w400,
                 ),
               ),

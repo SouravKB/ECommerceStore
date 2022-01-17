@@ -8,6 +8,7 @@ import 'package:ecommercestore/widgets/text_form_field.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 
 class ShopRegister extends StatefulWidget {
   const ShopRegister({Key? key}) : super(key: key);
@@ -288,7 +289,9 @@ class _ShopRegisterState extends State<ShopRegister> {
                               color: Colors.white,
                             ),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+                            final res = await locationFromAddress(address!);
+                            final location = res.first;
                             if (_formKey.currentState!.validate()) {
                               Shop shop = Shop(
                                   shopId: gstId!,
@@ -297,6 +300,7 @@ class _ShopRegisterState extends State<ShopRegister> {
                                   phoneNos: [phoneNo!],
                                   emailIds: [email!],
                                   address: address!,
+                                  location: location,
                                   openTime: openTime,
                                   closeTime: closeTime,
                                   isOpenNow: true,

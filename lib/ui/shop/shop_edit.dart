@@ -11,6 +11,7 @@ import 'package:ecommercestore/widgets/input_decoration.dart';
 import 'package:ecommercestore/widgets/phone_list_card.dart';
 import 'package:ecommercestore/widgets/text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 
 class ShopEdit extends StatefulWidget {
   ShopEdit({Key? key, required this.shop}) : super(key: key);
@@ -356,7 +357,9 @@ class _ShopEditState extends State<ShopEdit> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
+          onPressed: () async {
+            final res = await locationFromAddress(address!);
+            final location = res.first;
             if (_formKey.currentState!.validate()) {
               ShopRepo.instance.updateShop(Shop(
                   shopPicUrl: imageUrl,
@@ -365,6 +368,7 @@ class _ShopEditState extends State<ShopEdit> {
                   phoneNos: phoneNos!,
                   emailIds: emailIds!,
                   address: address!,
+                  location: location,
                   shopId: widget.shop.shopId,
                   isOpenNow: isOpenNow!,
                   openTime: openTime!,
