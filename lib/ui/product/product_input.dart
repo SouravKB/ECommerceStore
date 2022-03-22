@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:ecommercestore/models/ui/product.dart';
 import 'package:ecommercestore/repositories/product_repo.dart';
+import 'package:ecommercestore/services/storage_service.dart';
 import 'package:ecommercestore/util/image_picker.dart';
 import 'package:ecommercestore/widgets/app_bar.dart';
 import 'package:ecommercestore/widgets/input_decoration.dart';
@@ -37,6 +38,8 @@ class _ProductInputState extends State<ProductInput> {
   File? image;
   String? category;
   final _imageInput = ImageChooser.instance;
+
+  final descController = TextEditingController();
 
   @override
   void initState() {
@@ -184,7 +187,7 @@ class _ProductInputState extends State<ProductInput> {
                     MyTextFormField(
                       initialValue: price.toString(),
                       decoration: const MyInputDecoration(
-                        labelText: "Category Name",
+                        labelText: "Cost",
                       ),
                       onChanged: (val) {
                         setState(() {
@@ -284,6 +287,7 @@ class _ProductInputState extends State<ProductInput> {
                     ),
                   if (desc == null)
                     TextField(
+                      controller: descController,
                       decoration: const MyInputDecoration(
                         labelText: 'Description',
                       ),
@@ -299,12 +303,13 @@ class _ProductInputState extends State<ProductInput> {
                       onChanged: (val) {
                         setState(() {
                           desc = val;
+                          descController.selection = TextSelection.collapsed(offset: val.length);
                         });
                       },
                     )
                   else
                     TextField(
-                      controller: TextEditingController(text: desc),
+                      controller: descController,
                       decoration: const MyInputDecoration(
                         labelText: 'Description',
                       ),
@@ -317,9 +322,11 @@ class _ProductInputState extends State<ProductInput> {
                         fontSize: 17,
                       ),
                       autocorrect: true,
+                      showCursor: true,
                       onChanged: (val) {
                         setState(() {
                           desc = val;
+                          descController.selection = TextSelection.collapsed(offset: val.length);
                         });
                       },
                     ),
@@ -344,6 +351,9 @@ class _ProductInputState extends State<ProductInput> {
                               log('save');
                               if (_formKey.currentState!.validate()) {
                                 log('saved');
+                                if (image != null) {
+                                  imageUrl = await StorageService.instance.uploadFile(image!, 'products');
+                                }
                                 final newProduct = Product(
                                     productId: (widget.product != null)
                                         ? widget.product!.productId

@@ -156,12 +156,9 @@ class ShopRepo {
   }
 
   Future<void> updateShop(Shop shop) async {
-    final shopOwners = await _sqfliteShopOwnerDao.getShopOwnerList(shop.shopId);
-    final ownerIds =
-        shopOwners.map((owner) => owner.ownerId).toList(growable: false);
     final cfsShop = firestore_models.Shop(
       shopId: shop.shopId,
-      ownerIds: ownerIds,
+      ownerIds: shop.ownerIds,
       name: shop.name,
       shopPicUrl: shop.shopPicUrl,
       type: shop.type,

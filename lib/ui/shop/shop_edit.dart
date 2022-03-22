@@ -40,8 +40,8 @@ class _ShopEditState extends State<ShopEdit> {
     super.initState();
     name = widget.shop.name;
     address = widget.shop.address;
-    phoneNos = widget.shop.phoneNos;
-    emailIds = widget.shop.emailIds;
+    phoneNos = List.from(widget.shop.phoneNos);
+    emailIds = List.from(widget.shop.emailIds);
     closeTime = widget.shop.closeTime;
     openTime = widget.shop.openTime;
     imageUrl = widget.shop.shopPicUrl;
@@ -88,42 +88,36 @@ class _ShopEditState extends State<ShopEdit> {
     return res;
   }
 
-  void _showPicker(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Wrap(
-              children: <Widget>[
-                ListTile(
-                    leading: const Icon(Icons.photo_library),
-                    title: const Text('Photo Library'),
-                    onTap: () async {
-                      log('image input');
-                      Navigator.pop(context);
-                      log('image input taken');
-                      image = await _imageInput.getImage(true);
-                      if (image != null) {
-                        imageUrl = await StorageService.instance
-                            .uploadFile(image!, 'users');
-                      }
-                    }),
-                ListTile(
-                  leading: const Icon(Icons.photo_camera),
-                  title: const Text('Camera'),
-                  onTap: () async {
-                    image = await _imageInput.getImage(false);
-                    if (image != null) {
-                      imageUrl = await StorageService.instance
-                          .uploadFile(image!, 'users');
-                    }
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ),
-          );
-        });
+  Future<File?> _showPicker(context) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Photo Library'),
+                onTap: () async {
+                  log('image input');
+                  log('image input taken');
+                  final image = await _imageInput.getImage(true);
+                  Navigator.pop(context, image);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text('Camera'),
+                onTap: () async {
+                  final image = await _imageInput.getImage(false);
+                  Navigator.pop(context, image);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -144,40 +138,39 @@ class _ShopEditState extends State<ShopEdit> {
                   Center(
                     child: Stack(
                       children: <Widget>[
-                        if (imageUrl != null)
-                          GestureDetector(
-                            onTap: () async {
-                              _showPicker(context);
-                            },
-                            child: CircleAvatar(
-                              radius: 70,
-                              child: ClipOval(
-                                child: Image.network(
-                                  imageUrl!,
-                                  height: 150,
-                                  width: 150,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          )
-                        else
-                          GestureDetector(
-                            onTap: () async {
-                              _showPicker(context);
-                            },
-                            child: CircleAvatar(
-                              radius: 70,
-                              child: ClipOval(
-                                child: (image==null) ? Image.asset(
-                                  'assets/images/flower.webp',
-                                  height: 150,
-                                  width: 150,
-                                  fit: BoxFit.cover,
-                                ): Image.file(image!)
+                        GestureDetector(
+                          onTap: () async {
+                            final pickedImage = await _showPicker(context);
+                            setState(() {
+                              image = pickedImage ?? image;
+                            });
+                          },
+                          child: CircleAvatar(
+                            radius: 70,
+                            child: ClipOval(
+                              child: image == null
+                                  ? imageUrl == null
+                                  ? Image.asset(
+                                'assets/images/flower.webp',
+                                height: 150,
+                                width: 150,
+                                fit: BoxFit.cover,
+                              )
+                                  : Image.network(
+                                imageUrl!,
+                                height: 150,
+                                width: 150,
+                                fit: BoxFit.cover,
+                              )
+                                  : Image.file(
+                                image!,
+                                height: 150,
+                                width: 150,
+                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
+                        ),
                         Positioned(
                             bottom: 1,
                             right: 1,
@@ -200,6 +193,7 @@ class _ShopEditState extends State<ShopEdit> {
                     height: 20,
                   ),
                   MyTextFormField(
+                    initialValue: name,
                     decoration: const MyInputDecoration(
                       prefixIcon: Icon(
                         Icons.person,
@@ -225,6 +219,7 @@ class _ShopEditState extends State<ShopEdit> {
                     height: 10,
                   ),
                   MyTextFormField(
+                    initialValue: address,
                     decoration: const MyInputDecoration(
                       prefixIcon: Icon(
                         Icons.location_city,
@@ -273,7 +268,7 @@ class _ShopEditState extends State<ShopEdit> {
                               initialEntryMode: TimePickerEntryMode.dial,
                             );
                             setState(() async {
-                              openTime = pickTime;
+                              openTime = pickTime ?? openTime;
                             });
                           },
                           child: InputDecorator(
@@ -307,7 +302,7 @@ class _ShopEditState extends State<ShopEdit> {
                             );
                             log(pickedTime?.format(context) ?? 'null');
                             setState(() {
-                              closeTime = pickedTime;
+                              closeTime = pickedTime ?? closeTime;
                             });
                           },
                           child: InputDecorator(
@@ -361,6 +356,10 @@ class _ShopEditState extends State<ShopEdit> {
             final res = await locationFromAddress(address!);
             final location = res.first;
             if (_formKey.currentState!.validate()) {
+              if (image != null) {
+                imageUrl =
+                await StorageService.instance.uploadFile(image!, 'shops');
+              }
               ShopRepo.instance.updateShop(Shop(
                   shopPicUrl: imageUrl,
                   name: name!,
@@ -374,13 +373,10 @@ class _ShopEditState extends State<ShopEdit> {
                   openTime: openTime!,
                   ownerIds: widget.shop.ownerIds,
                   closeTime: closeTime!));
+              Navigator.pop(context);
             }
           },
-          child: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Icon(Icons.save)),
+          child: const Icon(Icons.save),
         ),
       ),
     );
