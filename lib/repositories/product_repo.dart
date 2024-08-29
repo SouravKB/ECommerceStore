@@ -129,8 +129,14 @@ class ProductRepo {
   }
 
   Stream<List<String>> getCategoriesStream(String shopId) async* {
-    await for (final _ in getProductListStreamForShop(shopId)) {
-      yield await _sqfliteProductDao.getCategories(shopId);
+    await for (final products in getProductListStreamForShop(shopId)) {
+      final cats = <String>[];
+      for (final product in products) {
+        if (!cats.contains(product.category)) {
+          cats.add(product.category);
+        }
+      }
+      yield cats;
     }
   }
 

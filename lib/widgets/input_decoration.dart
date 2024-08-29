@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyInputDecoration extends InputDecoration {
@@ -9,7 +8,7 @@ class MyInputDecoration extends InputDecoration {
     TextStyle? labelStyle = const TextStyle(
       fontSize: 18,
       color: Colors.grey,
-      fontWeight: FontWeight.w800,
+      fontWeight: FontWeight.w400,
     ),
     Widget? prefixIcon,
     Widget? suffixIcon,
